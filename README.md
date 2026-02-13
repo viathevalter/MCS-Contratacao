@@ -37,3 +37,22 @@ Para verificar los datos guardados:
 - `wolters_workers`: Perfiles de trabajadores convertidos.
 - `wolters_jobs`: Vacantes activas.
 - `wolters_shortlists`: Relación Job <-> Worker con puntuación.
+
+## Despliegue en Vercel
+
+Este proyecto está configurado para ser desplegado en [Vercel](https://vercel.com).
+
+### Configuración requerida
+
+1. Importar el proyecto en Vercel.
+2. Configurar las siguientes **Environment Variables** en la configuración del proyecto:
+    - `VITE_SUPABASE_URL`: URL de tu proyecto Supabase.
+    - `VITE_SUPABASE_ANON_KEY`: Clave anónima pública de Supabase.
+    - `GEMINI_API_KEY`: Tu clave API de Gemini (si se utiliza).
+
+### Build Command
+
+El comando de build predeterminado es:
+`vite build`
+El directorio de salida es:
+`dist`
