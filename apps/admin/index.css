@@ -1,0 +1,14 @@
+@import "tailwindcss";
+
+@theme {
+    /* Brand Colors (Wolters Blue) */
+    --color-brand-50: #f0f9ff;
+    --color-brand-100: #e0f2fe;
+    --color-brand-500: #004F9F;
+    --color-brand-600: #003366;
+    --color-brand-900: #002244;
+
+    /* CTA Colors (Action Orange) */
+    --color-cta-500: #FF6B00;
+    --color-cta-600: #e66000;
+}

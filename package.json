@@ -1,0 +1,15 @@
+{
+  "name": "mcs-contratacao-root",
+  "private": true,
+  "workspaces": [
+    "apps/*"
+  ],
+  "scripts": {
+    "dev:landing": "npm run dev --workspace=apps/landing",
+    "build:landing": "npm run build --workspace=apps/landing",
+    "start:landing": "npm run start --workspace=apps/landing",
+    "dev:admin": "npm run dev --workspace=apps/admin",
+    "build:admin": "npm run build --workspace=apps/admin",
+    "preview:admin": "npm run preview --workspace=apps/admin"
+  }
+}
