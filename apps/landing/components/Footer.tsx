@@ -10,7 +10,8 @@ export function Footer() {
                 <div className="grid gap-12 md:grid-cols-2 lg:grid-cols-4">
                     <div className="col-span-2">
                         <div className="flex items-center gap-3 mb-6">
-                            <img src="/logowolters.svg" alt="Wolter's Contratação" className="h-8 w-auto" />
+                            <img src="/logowolters.svg" alt="Wolter's Contratação" className="h-10 w-auto" />
+                            <span className="text-2xl font-bold text-white">Wolter's Contratação</span>
                         </div>
                         <p className="max-w-md text-slate-400 leading-relaxed">
                             Sua parceira estratégica em recrutamento industrial. Conectamos talento e oportunidade em toda a Europa.

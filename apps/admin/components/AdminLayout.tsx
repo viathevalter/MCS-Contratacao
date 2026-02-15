@@ -36,8 +36,11 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
         ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'} 
         md:translate-x-0
       `}>
-        <div className="h-16 flex items-center px-6 bg-slate-950 font-bold text-white tracking-wider justify-between md:justify-start">
-          <img src="/logowolters.svg" alt="Wolters Admin" className="h-8 w-auto" />
+        <div className="h-16 flex items-center px-6 bg-slate-950 font-bold text-white tracking-wider justify-between md:justify-start gap-3">
+          <div className="flex items-center gap-3">
+            <img src="/logowolters.svg" alt="Wolters Admin" className="h-8 w-auto" />
+            <span>WOLTERS ADMIN</span>
+          </div>
           <button
             onClick={() => setIsSidebarOpen(false)}
             className="md:hidden text-slate-400 hover:text-white"
