@@ -17,8 +17,8 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
           <Link to="/" className="flex items-center gap-3 hover:opacity-90 transition-opacity">
             {/* Logo */}
-            <img src="/logowolters.svg" alt="Wolter's Contratação" className="h-12 w-auto" />
-            <div className="leading-tight pb-1">
+            <img src="/logowolters.svg" alt="Wolter's Contratação" className="h-24 w-auto" />
+            <div className="leading-tight">
               <div className="font-bold text-xl text-slate-900 tracking-tight">Wolter's <span className="text-[#004F9F]">Contratação</span></div>
             </div>
           </Link>
@@ -55,7 +55,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
           <div className="grid gap-12 md:grid-cols-2 lg:grid-cols-4">
             <div className="col-span-2">
               <div className="flex items-center gap-3 mb-6">
-                <img src="/logowolters.svg" alt="Wolter's Contratação" className="h-10 w-auto" />
+                <img src="/logowolters.svg" alt="Wolter's Contratação" className="h-20 w-auto" />
                 <span className="text-2xl font-bold text-white">Wolter's Contratação</span>
               </div>
               <p className="max-w-md text-slate-400">

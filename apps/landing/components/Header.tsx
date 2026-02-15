@@ -13,8 +13,8 @@ export function Header() {
             <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
                 <div className="flex items-center gap-3">
                     <Link href="/" className="flex items-center gap-3 hover:opacity-90 transition-opacity">
-                        <img src="/logowolters.svg" alt="Wolter's Contratação" className="h-12 w-auto" />
-                        <div className="leading-tight pb-1">
+                        <img src="/logowolters.svg" alt="Wolter's Contratação" className="h-24 w-auto" />
+                        <div className="leading-tight">
                             <div className="font-bold text-xl text-slate-900 tracking-tight">Wolter's <span className="text-[#004F9F]">Contratação</span></div>
                         </div>
                     </Link>
