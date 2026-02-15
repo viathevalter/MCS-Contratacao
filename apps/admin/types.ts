@@ -19,7 +19,14 @@ export interface CandidatePayload {
   previous_companies?: string[];
 }
 
-export type CandidateStatus = 'new' | 'needs_review' | 'processed' | 'rejected';
+export interface KanbanStage {
+  id: string;
+  title: string;
+  color: string;
+  position: number;
+}
+
+export type CandidateStatus = string; // Was union, now string to support custom stages
 
 export interface CandidateSubmission {
   id: string;

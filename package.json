@@ -5,6 +5,7 @@
     "apps/*"
   ],
   "scripts": {
+    "dev": "npm run dev:admin",
     "dev:landing": "npm run dev --workspace=apps/landing",
     "build:landing": "npm run build --workspace=apps/landing",
     "start:landing": "npm run start --workspace=apps/landing",

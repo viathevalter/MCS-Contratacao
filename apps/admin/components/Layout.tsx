@@ -7,9 +7,8 @@ interface LayoutProps {
 
 const Layout: React.FC<LayoutProps> = ({ children }) => {
   const currentYear = new Date().getFullYear();
-  // Assuming the landing page is at the root domain or a specific URL. 
-  // Should ideally be an env var, but using the likely production URL or relative root.
-  const landingUrl = "https://mcs-contratacao.vercel.app";
+  // Use environment variable for Landing URL, defaulting to production
+  const landingUrl = import.meta.env.VITE_LANDING_URL || "https://mcs-contratacao.vercel.app";
 
   return (
     <div className="min-h-screen flex flex-col bg-slate-50 font-sans text-slate-900">
@@ -88,7 +87,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
               <ul className="space-y-2">
                 <li><a href={`${landingUrl}/#quem-somos`} className="hover:text-white transition-colors">Quem Somos</a></li>
                 <li><a href={`${landingUrl}/#servicos`} className="hover:text-white transition-colors">Serviços</a></li>
-                <li><Link to="/" className="hover:text-white transition-colors">Candidatar-se</Link></li>
+                <li><a href={`${landingUrl}/candidatar`} className="hover:text-white transition-colors">Candidatar-se</a></li>
                 <li><Link to="/login" className="hover:text-white transition-colors">Portal do Cliente</Link></li>
               </ul>
             </div>

@@ -2,6 +2,8 @@
 
 import React, { useState, ChangeEvent, FormEvent } from 'react';
 import Link from 'next/link';
+import { Header } from '../../components/Header';
+import { Footer } from '../../components/Footer';
 import { stagingRepo } from '../../lib/stagingRepo';
 import { FileMetadata } from '../../lib/types';
 import { Button } from '../../components/ui/Button';
@@ -221,26 +223,8 @@ export default function CandidateForm() {
 
     return (
         <div className="min-h-screen bg-slate-50 font-sans">
-            {/* Shared Header (Replicated from page.tsx or we could extract it) */}
-            <header className="sticky top-0 z-50 border-b border-slate-200 bg-white/90 backdrop-blur-md shadow-sm">
-                <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
-                    <div className="flex items-center gap-3">
-                        <Link href="/" className="flex items-center gap-3">
-                            <div className="h-9 w-9 flex-shrink-0 rounded-lg bg-gradient-to-br from-[#004F9F] to-[#003366] text-white flex items-center justify-center font-bold text-lg">
-                                W
-                            </div>
-                            <div className="leading-tight">
-                                <div className="font-bold text-lg text-slate-900 tracking-tight">Wolter's <span className="text-[#004F9F]">Contratação</span></div>
-                            </div>
-                        </Link>
-                    </div>
-                    <nav className="hidden items-center gap-8 text-sm font-medium text-slate-600 md:flex">
-                        <Link href="/#quem-somos" className="hover:text-[#004F9F] transition-colors">Quem Somos</Link>
-                        <Link href="/#servicos" className="hover:text-[#004F9F] transition-colors">Serviços</Link>
-                        <Link href="/#internacional" className="hover:text-[#004F9F] transition-colors">Internacional</Link>
-                    </nav>
-                </div>
-            </header>
+            {/* Shared Header */}
+            <Header />
 
             {/* Hero Section */}
             <div className="relative px-4 py-16 bg-gradient-to-br from-[#004F9F] to-[#003366] text-white overflow-hidden shadow-lg mb-10">
@@ -561,6 +545,8 @@ export default function CandidateForm() {
 
                 </form>
             </div>
-        </div>
+
+            <Footer />
+        </div >
     );
 }
