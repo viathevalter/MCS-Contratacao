@@ -14,7 +14,7 @@ export function Header() {
                 <div className="flex items-center gap-3">
                     <Link href="/" className="flex items-center gap-3 hover:opacity-90 transition-opacity">
                         <img src="/logowolters.svg" alt="Wolter's Contratação" className="h-12 w-auto" />
-                        <div className="leading-tight">
+                        <div className="leading-tight pb-1">
                             <div className="font-bold text-xl text-slate-900 tracking-tight">Wolter's <span className="text-[#004F9F]">Contratação</span></div>
                         </div>
                     </Link>
