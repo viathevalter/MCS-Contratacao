@@ -36,12 +36,12 @@ export function Header() {
                     href="https://wa.me/351931753270"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="md:hidden flex items-center gap-2 text-[#25D366] font-semibold hover:opacity-80 transition-opacity"
+                    className="md:hidden flex items-center justify-center text-[#25D366] hover:opacity-80 transition-opacity p-2"
+                    aria-label="WhatsApp"
                 >
-                    <svg viewBox="0 0 24 24" className="h-6 w-6" fill="currentColor">
+                    <svg viewBox="0 0 24 24" className="h-8 w-8" fill="currentColor">
                         <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 2.023.888 3.15.888 3.182 0 5.768-2.587 5.769-5.767.001-3.181-2.584-5.768-5.765-5.768zm3.394 8.167c-.145.405-.837.77-1.172.824-.299.045-1.771.777-4.075-1.434-.485-.465-1.263-1.219-1.263-2.327 0-1.087.576-1.637.781-1.859.176-.192.373-.242.495-.242.122 0 .244.004.349.048.118.049.52.285.795.836.23.46.257.545.195.669-.061.123-.095.199-.186.299-.091.1-.192.223-.27.301-.082.083-.169.173.078.601.246.427 1.341 1.94 2.859 2.656.402.19.702.323 1.05.426.313.092.839.066 1.189-.136.417-.238.643-1.009.643-1.009zM12 2C6.48 2 2 6.48 2 12c0 1.92.534 3.73 1.468 5.312L2 22l4.825-1.27A9.957 9.957 0 0012 22c5.52 0 10-4.48 10-10S17.52 2 12 2z" />
                     </svg>
-                    <span>WhatsApp</span>
                 </a>
             </div>
 
