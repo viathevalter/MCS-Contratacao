@@ -26,9 +26,8 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
           </Link>
 
           {/* Simple Nav for Admin View */}
-          <nav className="hidden items-center gap-8 text-sm font-medium text-slate-600 md:flex">
-            {/* Links to Landing Page removed to keep focus on the form */}
-            {/* Link to WhatsApp */}
+          {/* Contact Info - Visible on all devices */}
+          <nav className="flex items-center gap-4 text-sm font-medium text-slate-600">
             {/* Link to WhatsApp */}
             <a
               href="https://wa.me/351931753270"
@@ -40,16 +39,10 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                 <path d="M12.004 2C6.479 2 2 6.479 2 12c0 2.164.701 4.195 1.9 5.892L2.7 22l4.223-1.168C8.58 21.666 10.25 22 12.004 22c5.525 0 10.004-4.479 10.004-10S17.525 2 12.004 2zM12 18.5c-1.28 0-2.502-.349-3.565-1.01l-.255-.16-2.65.73.705-2.58-.168-.266A8.502 8.502 0 0 1 3.5 12C3.5 7.309 7.31 3.5 12 3.5c4.69 0 8.5 3.809 8.5 8.5S16.69 18.5 12 18.5z" />
                 <path d="M16.92 14.86c-.27-.135-1.6-.79-1.845-.88-.245-.09-.425-.135-.605.135-.18.27-.7 1.155-.86 1.35-.16.195-.32.22-.59.085-.27-.135-1.14-.54-2.17-1.46-.8-.715-1.34-1.6-1.5-1.87-.16-.27-.015-.42.12-.555.12-.12.27-.315.405-.475.135-.16.18-.27.27-.45.09-.18.045-.34-.025-.475-.07-.135-.605-1.46-.83-1.995-.22-.53-.445-.455-.605-.465-.15-.01-.32-.01-.49-.01-.17 0-.445.065-.68.32-.235.255-.9.88-.9 2.145s.92 2.485 1.05 2.675c.125.19 1.8 2.765 4.365 3.875 1.575.68 2.195.68 2.945.57.825-.12 1.6-.65 1.825-1.28.225-.63.225-1.17.16-1.28-.065-.11-.235-.19-.505-.325z" />
               </svg>
-              +351 931 753 270
+              <span className="hidden sm:inline">+351 931 753 270</span>
+              <span className="sm:hidden">WhatsApp</span>
             </a>
           </nav>
-
-          {/* Mobile Menu Placeholder - kept simple for now */}
-          <button className="md:hidden p-2 text-slate-600">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
-            </svg>
-          </button>
         </div>
       </header>
 
@@ -76,10 +69,11 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
               <h3 className="text-white font-semibold mb-4">Contato</h3>
               <ul className="space-y-3">
                 <li className="flex items-center gap-3">
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5 text-[#004F9F]">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 0 0 2.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 0 1-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 0 0-1.091-.852H4.5A2.25 2.25 0 0 0 2.25 4.5v2.25Z" />
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5 text-[#004F9F]">
+                    <path d="M12.004 2C6.479 2 2 6.479 2 12c0 2.164.701 4.195 1.9 5.892L2.7 22l4.223-1.168C8.58 21.666 10.25 22 12.004 22c5.525 0 10.004-4.479 10.004-10S17.525 2 12.004 2zM12 18.5c-1.28 0-2.502-.349-3.565-1.01l-.255-.16-2.65.73.705-2.58-.168-.266A8.502 8.502 0 0 1 3.5 12C3.5 7.309 7.31 3.5 12 3.5c4.69 0 8.5 3.809 8.5 8.5S16.69 18.5 12 18.5z" />
+                    <path d="M16.92 14.86c-.27-.135-1.6-.79-1.845-.88-.245-.09-.425-.135-.605.135-.18.27-.7 1.155-.86 1.35-.16.195-.32.22-.59.085-.27-.135-1.14-.54-2.17-1.46-.8-.715-1.34-1.6-1.5-1.87-.16-.27-.015-.42.12-.555.12-.12.27-.315.405-.475.135-.16.18-.27.27-.45.09-.18.045-.34-.025-.475-.07-.135-.605-1.46-.83-1.995-.22-.53-.445-.455-.605-.465-.15-.01-.32-.01-.49-.01-.17 0-.445.065-.68.32-.235.255-.9.88-.9 2.145s.92 2.485 1.05 2.675c.125.19 1.8 2.765 4.365 3.875 1.575.68 2.195.68 2.945.57.825-.12 1.6-.65 1.825-1.28.225-.63.225-1.17.16-1.28-.065-.11-.235-.19-.505-.325z" />
                   </svg>
-                  <a href="tel:+351931753270" className="hover:text-white transition-colors">+351 931 753 270</a>
+                  <a href="https://wa.me/351931753270" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">+351 931 753 270</a>
                 </li>
                 <li className="flex items-center gap-3">
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5 text-[#004F9F]">
@@ -90,15 +84,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
               </ul>
             </div>
 
-            <div>
-              <h3 className="text-white font-semibold mb-4">Links Rápidos</h3>
-              <ul className="space-y-2">
-                <li><a href={`${landingUrl}/#quem-somos`} className="hover:text-white transition-colors">Quem Somos</a></li>
-                <li><a href={`${landingUrl}/#servicos`} className="hover:text-white transition-colors">Serviços</a></li>
-                <li><a href={`${landingUrl}/candidatar`} className="hover:text-white transition-colors">Candidatar-se</a></li>
-                <li><Link to="/login" className="hover:text-white transition-colors">Portal do Cliente</Link></li>
-              </ul>
-            </div>
+            {/* Links Rápidos Removed */}
           </div>
           <div className="mt-12 border-t border-slate-800 pt-8 text-center text-sm text-slate-500">
             &copy; {currentYear} Wolter's Contratação. Todos os direitos reservados.
