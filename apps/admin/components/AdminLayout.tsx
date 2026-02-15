@@ -37,7 +37,7 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
         md:translate-x-0
       `}>
         <div className="h-16 flex items-center px-6 bg-slate-950 font-bold text-white tracking-wider justify-between md:justify-start">
-          <span>WOLTERS ADMIN</span>
+          <img src="/logowolters.svg" alt="Wolters Admin" className="h-8 w-auto" />
           <button
             onClick={() => setIsSidebarOpen(false)}
             className="md:hidden text-slate-400 hover:text-white"

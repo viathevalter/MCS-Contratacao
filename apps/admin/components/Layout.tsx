@@ -17,12 +17,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
           <Link to="/" className="flex items-center gap-3 hover:opacity-90 transition-opacity">
             {/* Logo */}
-            <div className="h-10 w-10 flex-shrink-0 rounded-lg bg-gradient-to-br from-[#004F9F] to-[#003366] text-white flex items-center justify-center font-bold text-xl shadow-sm">
-              W
-            </div>
-            <div className="leading-tight">
-              <div className="font-bold text-xl text-slate-900 tracking-tight">Wolter's <span className="text-[#004F9F]">Contratação</span></div>
-            </div>
+            <img src="/logowolters.svg" alt="Wolter's Contratação" className="h-10 w-auto" />
           </Link>
 
           {/* Simple Nav for Admin View */}
@@ -57,8 +52,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
           <div className="grid gap-12 md:grid-cols-2 lg:grid-cols-4">
             <div className="col-span-2">
               <div className="flex items-center gap-3 mb-6">
-                <div className="h-8 w-8 rounded bg-gradient-to-br from-[#004F9F] to-[#003366] flex items-center justify-center font-bold text-white">W</div>
-                <span className="text-2xl font-bold text-white">Wolter's Contratação</span>
+                <img src="/logowolters.svg" alt="Wolter's Contratação" className="h-8 w-auto" />
               </div>
               <p className="max-w-md text-slate-400">
                 Sua parceira estratégica em recrutamento industrial. Conectamos talento e oportunidade em toda a Europa.

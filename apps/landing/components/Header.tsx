@@ -13,12 +13,7 @@ export function Header() {
             <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
                 <div className="flex items-center gap-3">
                     <Link href="/" className="flex items-center gap-3 hover:opacity-90 transition-opacity">
-                        <div className="h-10 w-10 flex-shrink-0 rounded-lg bg-gradient-to-br from-[#004F9F] to-[#003366] text-white flex items-center justify-center font-bold text-xl shadow-sm">
-                            W
-                        </div>
-                        <div className="leading-tight">
-                            <div className="font-bold text-xl text-slate-900 tracking-tight">Wolter's <span className="text-[#004F9F]">Contratação</span></div>
-                        </div>
+                        <img src="/logowolters.svg" alt="Wolter's Contratação" className="h-10 w-auto" />
                     </Link>
                 </div>
 
