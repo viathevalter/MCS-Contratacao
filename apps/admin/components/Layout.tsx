@@ -27,11 +27,8 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
 
           {/* Simple Nav for Admin View */}
           <nav className="hidden items-center gap-8 text-sm font-medium text-slate-600 md:flex">
-            {/* Links pointing back to the Landing Page */}
-            <a href={`${landingUrl}/#quem-somos`} className="hover:text-[#004F9F] transition-colors">Quem Somos</a>
-            <a href={`${landingUrl}/#servicos`} className="hover:text-[#004F9F] transition-colors">Serviços</a>
-            <a href={`${landingUrl}/#internacional`} className="hover:text-[#004F9F] transition-colors">Internacional</a>
-            <div className="h-4 w-px bg-slate-300 mx-2"></div>
+            {/* Links to Landing Page removed to keep focus on the form */}
+            {/* Link to WhatsApp */}
             {/* Link to WhatsApp */}
             <a
               href="https://wa.me/351931753270"
