@@ -7,11 +7,9 @@ const nextConfig: NextConfig = {
   async redirects() {
     return [
       {
-      {
         source: '/vagas',
         destination: '/candidatar',
         permanent: true,
-      },
       },
     ];
   },
