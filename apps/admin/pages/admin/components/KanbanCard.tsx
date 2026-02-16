@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { useDraggable } from '@dnd-kit/core';
 import { CSS } from '@dnd-kit/utilities';
-import { MapPin, Briefcase } from 'lucide-react';
+import { MapPin, Briefcase, Phone } from 'lucide-react';
 import { CandidateSubmission } from '../../../types';
 
 interface Props {
@@ -37,9 +37,14 @@ export const KanbanCard: React.FC<Props> = ({ item }) => {
                 <span className="text-[10px] text-slate-400 font-mono bg-slate-50 px-1.5 py-0.5 rounded whitespace-nowrap">{date}</span>
             </div>
 
-            <div className="flex items-center gap-1.5 text-xs text-slate-600 mb-3" title={item.raw_payload.offer}>
+            <div className="flex items-center gap-1.5 text-xs text-slate-600 mb-1" title={item.raw_payload.offer}>
                 <Briefcase className="w-3 h-3 text-slate-400 flex-shrink-0" />
                 <span className="truncate">{item.raw_payload.offer}</span>
+            </div>
+
+            <div className="flex items-center gap-1.5 text-xs text-slate-600 mb-3" title="Teléfono">
+                <Phone className="w-3 h-3 text-slate-400 flex-shrink-0" />
+                <span className="truncate">{item.raw_phone}</span>
             </div>
 
             <div className="flex justify-between items-center text-xs mt-2 border-t border-slate-50 pt-2">

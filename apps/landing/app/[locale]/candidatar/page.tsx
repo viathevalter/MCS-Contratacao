@@ -1,14 +1,14 @@
 'use client';
 
 import React, { useState, ChangeEvent, FormEvent } from 'react';
-import Link from 'next/link';
-import { Header } from '../../components/Header';
-import { Footer } from '../../components/Footer';
-import { stagingRepo } from '../../lib/stagingRepo';
-import { FileMetadata } from '../../lib/types';
-import { Button } from '../../components/ui/Button';
-import { Input } from '../../components/ui/Input';
-import { Card } from '../../components/ui/Card';
+import { Link } from '../../../navigation';
+import { Header } from '../../../components/Header';
+import { Footer } from '../../../components/Footer';
+import { stagingRepo } from '../../../lib/stagingRepo';
+import { FileMetadata } from '../../../lib/types';
+import { Button } from '../../../components/ui/Button';
+import { Input } from '../../../components/ui/Input';
+import { Card } from '../../../components/ui/Card';
 
 // Constants for form options
 const DOCUMENTATION_OPTIONS = [
@@ -72,7 +72,10 @@ const INITIAL_STATE: FormState = {
     fileMeta: null
 };
 
+import { useTranslations } from 'next-intl';
+
 export default function CandidateForm() {
+    const t = useTranslations('CandidateForm');
     const [formData, setFormData] = useState<FormState>(INITIAL_STATE);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [submittedId, setSubmittedId] = useState<string | null>(null);
@@ -127,7 +130,7 @@ export default function CandidateForm() {
 
         // Basic Validation
         if (!formData.name || !formData.phone || !formData.location || !formData.documentation || formData.offers.size === 0) {
-            setError("Por favor, complete todos los campos obligatorios marcados con *");
+            setError(t('validationError'));
             window.scrollTo(0, 0);
             return;
         }
@@ -176,7 +179,7 @@ export default function CandidateForm() {
 
         } catch (err) {
             console.error(err);
-            setError("Hubo un error al guardar su solicitud. Intente nuevamente.");
+            setError(t('submissionError'));
             setIsSubmitting(false);
         }
     };
@@ -196,11 +199,11 @@ export default function CandidateForm() {
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
                             </svg>
                         </div>
-                        <h2 className="text-3xl font-bold text-slate-900 mb-2">¡Solicitud enviada con éxito!</h2>
-                        <p className="text-slate-600 mb-8 text-lg">Hemos recibido su información correctamente.</p>
+                        <h2 className="text-3xl font-bold text-slate-900 mb-2">{t('successTitle')}</h2>
+                        <p className="text-slate-600 mb-8 text-lg">{t('successMessage')}</p>
 
                         <div className="bg-slate-50 border border-slate-200 p-6 rounded-xl inline-block mb-10 shadow-sm">
-                            <span className="text-xs text-slate-500 uppercase tracking-widest font-bold">Número de registro</span>
+                            <span className="text-xs text-slate-500 uppercase tracking-widest font-bold">{t('registrationNumber')}</span>
                             <div className="text-2xl font-mono font-bold text-[#004F9F] mt-1">{submittedId.substring(0, 8).toUpperCase()}</div>
                         </div>
 
@@ -209,10 +212,10 @@ export default function CandidateForm() {
                                 onClick={resetForm}
                                 className="inline-flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-full text-white bg-[#FF6B00] hover:bg-[#e66000] shadow-md hover:shadow-lg transition-all duration-200"
                             >
-                                Enviar otra solicitud
+                                {t('sendAnother')}
                             </button>
                             <Link href="/" className="text-slate-500 hover:text-slate-900 underline">
-                                Volver al inicio
+                                {t('backHome')}
                             </Link>
                         </div>
                     </Card>
@@ -232,11 +235,10 @@ export default function CandidateForm() {
 
                 <div className="relative z-10 text-center max-w-2xl mx-auto">
                     <h1 className="text-3xl md:text-5xl font-extrabold tracking-tight mb-4 drop-shadow-md">
-                        Ofertas de Empleo
+                        {t('title')}
                     </h1>
                     <p className="text-lg md:text-xl text-blue-100 font-light leading-relaxed">
-                        Oportunidades de trabajo en la Unión Europea. <br className="hidden md:block" />
-                        Complete el formulario para iniciar su proceso de postulación.
+                        {t('subtitle')}
                     </p>
                 </div>
             </div>
@@ -264,19 +266,19 @@ export default function CandidateForm() {
                         title={
                             <div className="flex items-center text-xl font-bold text-slate-800">
                                 <span className="bg-blue-50 text-[#004F9F] w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold mr-3 border border-blue-100 shadow-sm">1</span>
-                                Datos Personales
+                                {t('personalData')}
                             </div>
                         }
                     >
                         <div className="space-y-5 p-1">
                             <Input
                                 name="name"
-                                label="Nombre Completo"
+                                label={t('nameLabel')}
                                 required
                                 value={formData.name}
                                 onChange={handleInputChange}
                                 containerClassName="w-full"
-                                placeholder="Su nombre y apellido"
+                                placeholder={t('namePlaceholder')}
                                 className="bg-slate-50 border-slate-200 focus:bg-white transition-colors"
                             />
 
@@ -284,7 +286,7 @@ export default function CandidateForm() {
                                 <Input
                                     name="phone"
                                     type="tel"
-                                    label="Teléfono / Whatsapp"
+                                    label={t('phoneLabel')}
                                     required
                                     value={formData.phone}
                                     onChange={handleInputChange}
@@ -295,7 +297,7 @@ export default function CandidateForm() {
                                 <Input
                                     name="email"
                                     type="email"
-                                    label="Correo electrónico"
+                                    label={t('emailLabel')}
                                     helperText="(Opcional)"
                                     value={formData.email}
                                     onChange={handleInputChange}
@@ -307,12 +309,12 @@ export default function CandidateForm() {
 
                             <Input
                                 name="location"
-                                label="¿Dónde está ubicado actualmente?"
+                                label={t('locationLabel')}
                                 required
                                 value={formData.location}
                                 onChange={handleInputChange}
                                 containerClassName="w-full"
-                                placeholder="Ciudad, País"
+                                placeholder={t('locationPlaceholder')}
                                 className="bg-slate-50 border-slate-200 focus:bg-white transition-colors"
                             />
                         </div>
@@ -324,13 +326,13 @@ export default function CandidateForm() {
                         title={
                             <div className="flex items-center text-xl font-bold text-slate-800">
                                 <span className="bg-blue-50 text-[#004F9F] w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold mr-3 border border-blue-100 shadow-sm">2</span>
-                                Perfil Profesional
+                                {t('profileData')}
                             </div>
                         }
                     >
                         <div className="space-y-8 p-1">
                             <div>
-                                <label className="block text-sm font-semibold text-slate-700 mb-4">¿Qué clase de documentación tiene? <span className="text-red-500">*</span></label>
+                                <label className="block text-sm font-semibold text-slate-700 mb-4">{t('documentationLabel')} <span className="text-red-500">*</span></label>
                                 <div className="space-y-3">
                                     {DOCUMENTATION_OPTIONS.map((opt) => {
                                         const isSelected = formData.documentation === opt;
@@ -367,7 +369,7 @@ export default function CandidateForm() {
                                             name="documentationOther"
                                             value={formData.documentationOther}
                                             onChange={handleInputChange}
-                                            placeholder="Especifique su documentación"
+                                            placeholder={t('documentationPlaceholder')}
                                             autoFocus
                                         />
                                     </div>
@@ -375,7 +377,7 @@ export default function CandidateForm() {
                             </div>
 
                             <div className="border-t border-slate-100 pt-6">
-                                <label className="block text-sm font-semibold text-slate-700 mb-4">¿Qué idiomas habla? <span className="text-slate-500 font-normal">(Selección Múltiple)</span> <span className="text-red-500">*</span></label>
+                                <label className="block text-sm font-semibold text-slate-700 mb-4">{t('languagesLabel')} <span className="text-slate-500 font-normal">(Selección Múltiple)</span> <span className="text-red-500">*</span></label>
                                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                                     {LANGUAGE_OPTIONS.map((lang) => {
                                         const isSelected = formData.languages.has(lang);
@@ -411,7 +413,7 @@ export default function CandidateForm() {
                                         name="languageOther"
                                         value={formData.languageOther}
                                         onChange={handleInputChange}
-                                        placeholder="Otro idioma (opcional)"
+                                        placeholder={t('languageOtherPlaceholder')}
                                         className="bg-slate-50 border-slate-200"
                                     />
                                 </div>
@@ -425,13 +427,13 @@ export default function CandidateForm() {
                         title={
                             <div className="flex items-center text-xl font-bold text-slate-800">
                                 <span className="bg-blue-50 text-[#004F9F] w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold mr-3 border border-blue-100 shadow-sm">3</span>
-                                Interés y Documentos
+                                {t('interestLabel')}
                             </div>
                         }
                     >
                         <div className="space-y-8 p-1">
                             <div>
-                                <label className="block text-sm font-semibold text-slate-700 mb-4">Seleccione la oferta de su interés <span className="text-slate-500 font-normal">(Selección Múltiple)</span> <span className="text-red-500">*</span></label>
+                                <label className="block text-sm font-semibold text-slate-700 mb-4">{t('offerLabel')} <span className="text-slate-500 font-normal">(Selección Múltiple)</span> <span className="text-red-500">*</span></label>
                                 <div className="grid grid-cols-1 gap-3">
                                     {OFFER_OPTIONS.map((opt) => {
                                         const isSelected = formData.offers.has(opt);
@@ -469,7 +471,7 @@ export default function CandidateForm() {
                                             name="offerOther"
                                             value={formData.offerOther}
                                             onChange={handleInputChange}
-                                            placeholder="Especifique el área de interés"
+                                            placeholder={t('offerPlaceholder')}
                                             autoFocus
                                         />
                                     </div>
@@ -477,7 +479,7 @@ export default function CandidateForm() {
                             </div>
 
                             <div className="border-t border-slate-100 pt-6">
-                                <label className="block text-sm font-semibold text-slate-700 mb-2">Adjuntar hoja de vida y certificaciones</label>
+                                <label className="block text-sm font-semibold text-slate-700 mb-2">{t('fileLabel')}</label>
                                 <div className={`mt-2 flex justify-center px-6 pt-5 pb-6 border-2 border-dashed rounded-xl transition-colors
                     ${formData.fileMeta ? 'border-blue-300 bg-blue-50' : 'border-slate-300 hover:border-blue-300 hover:bg-slate-50'}
                     `}>
@@ -489,10 +491,10 @@ export default function CandidateForm() {
                                                 </svg>
                                                 <div className="flex text-sm text-slate-600 justify-center">
                                                     <label htmlFor="file-upload" className="relative cursor-pointer bg-white rounded-md font-medium text-[#004F9F] hover:text-[#003366] focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-blue-500">
-                                                        <span>Subir un archivo</span>
+                                                        <span>{t('uploadButton')}</span>
                                                         <input id="file-upload" name="file-upload" type="file" className="sr-only" onChange={handleFileChange} />
                                                     </label>
-                                                    <p className="pl-1">o arrastrar y soltar</p>
+                                                    <p className="pl-1">{t('dragDrop')}</p>
                                                 </div>
                                                 <p className="text-xs text-slate-500">PDF, DOCX, JPG hasta 5MB</p>
                                             </>
@@ -502,7 +504,7 @@ export default function CandidateForm() {
                                                 <span className="text-sm font-medium text-slate-900">{formData.fileMeta.name}</span>
                                                 <span className="text-xs text-slate-500">{(formData.fileMeta.size / 1024).toFixed(0)} KB</span>
                                                 <label htmlFor="file-upload" className="mt-2 text-xs font-semibold text-[#004F9F] hover:text-[#003366] cursor-pointer">
-                                                    Cambiar archivo
+                                                    {t('changeFile')}
                                                     <input id="file-upload" name="file-upload" type="file" className="sr-only" onChange={handleFileChange} />
                                                 </label>
                                             </div>
@@ -512,14 +514,14 @@ export default function CandidateForm() {
                             </div>
 
                             <div>
-                                <label className="block text-sm font-medium text-slate-700 mb-2">Observaciones <span className="text-slate-400 font-normal">(Opcional)</span></label>
+                                <label className="block text-sm font-medium text-slate-700 mb-2">{t('observationsLabel')} <span className="text-slate-400 font-normal">(Opcional)</span></label>
                                 <textarea
                                     name="observations"
                                     rows={3}
                                     value={formData.observations}
                                     onChange={handleInputChange}
                                     className="w-full rounded-xl border-slate-200 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-4 border bg-white text-slate-900 transition-all placeholder:text-slate-400"
-                                    placeholder="Información adicional relevante..."
+                                    placeholder={t('observationsPlaceholder')}
                                 />
                             </div>
                         </div>
@@ -537,9 +539,9 @@ export default function CandidateForm() {
                                         <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                                         <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                                     </svg>
-                                    Enviando...
+                                    {t('submittingButton')}
                                 </span>
-                            ) : "ENVIAR SOLICITUD"}
+                            ) : t('submitButton')}
                         </button>
                     </div>
 

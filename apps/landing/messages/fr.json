@@ -1,0 +1,43 @@
+{
+    "Index": {
+        "title": "PERSONNE NE VOUS CONNECTE AU TALENT INDUSTRIEL COMME NOUS",
+        "subtitle": "Chez Wolter’s Contratação, nous sommes spécialisés dans le recrutement et la fourniture de main-d'œuvre qualifiée, connectant les entreprises avec des professionnels formés pour des projets industriels."
+    },
+    "CandidateForm": {
+        "title": "Offres d'Emploi",
+        "subtitle": "Opportunités de travail dans l'Union Européenne. Remplissez le formulaire pour démarrer votre processus de candidature.",
+        "personalData": "Données Personnelles",
+        "nameLabel": "Nom Complet",
+        "namePlaceholder": "Votre nom et prénom",
+        "phoneLabel": "Téléphone / Whatsapp",
+        "emailLabel": "E-mail",
+        "locationLabel": "Où êtes-vous situé actuellement ?",
+        "locationPlaceholder": "Ville, Pays",
+        "profileData": "Profil Professionnel",
+        "documentationLabel": "Quel type de documentation possédez-vous ?",
+        "documentationPlaceholder": "Précisez votre documentation",
+        "languagesLabel": "Quelles langues parlez-vous ?",
+        "languageOtherPlaceholder": "Autre langue (optionnel)",
+        "interestLabel": "Intérêt et Documents",
+        "offerLabel": "Sélectionnez l'offre qui vous intéresse",
+        "offerPlaceholder": "Précisez le domaine d'intérêt",
+        "fileLabel": "Joindre CV et certifications",
+        "uploadButton": "Télécharger un fichier",
+        "dragDrop": "ou glisser-déposer",
+        "changeFile": "Changer de fichier",
+        "observationsLabel": "Observations",
+        "observationsPlaceholder": "Informations supplémentaires pertinentes...",
+        "submitButton": "ENVOYER CANDIDATURE",
+        "submittingButton": "Envoi en cours...",
+        "successTitle": "Candidature envoyée avec succès !",
+        "successMessage": "Nous avons bien reçu vos informations.",
+        "registrationNumber": "Numéro d'enregistrement",
+        "sendAnother": "Envoyer une autre candidature",
+        "backHome": "Retour à l'accueil",
+        "validationError": "Veuillez remplir tous les champs obligatoires marqués d'un *",
+        "submissionError": "Une erreur s'est produite lors de l'enregistrement de votre candidature. Veuillez réessayer."
+    },
+    "LanguageSelector": {
+        "label": "Langue"
+    }
+}

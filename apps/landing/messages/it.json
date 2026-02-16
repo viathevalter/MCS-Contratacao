@@ -1,0 +1,43 @@
+{
+    "Index": {
+        "title": "NESSUNO TI CONNETTE CON IL TALENTO INDUSTRIALE COME NOI",
+        "subtitle": "In Wolter’s Contratação, siamo specializzati nel reclutamento e nella fornitura di manodopera qualificata, collegando le aziende con professionisti formati per progetti industriali."
+    },
+    "CandidateForm": {
+        "title": "Offerte di Lavoro",
+        "subtitle": "Opportunità di lavoro nell'Unione Europea. Compila il modulo per avviare il processo di candidatura.",
+        "personalData": "Dati Personali",
+        "nameLabel": "Nome Completo",
+        "namePlaceholder": "Il tuo nome e cognome",
+        "phoneLabel": "Telefono / Whatsapp",
+        "emailLabel": "E-mail",
+        "locationLabel": "Dove ti trovi attualmente?",
+        "locationPlaceholder": "Città, Paese",
+        "profileData": "Profilo Professionale",
+        "documentationLabel": "Che tipo di documentazione possiedi?",
+        "documentationPlaceholder": "Specifica la tua documentazione",
+        "languagesLabel": "Quali lingue parli?",
+        "languageOtherPlaceholder": "Altra lingua (opzionale)",
+        "interestLabel": "Interesse e Documenti",
+        "offerLabel": "Seleziona l'offerta di tuo interesse",
+        "offerPlaceholder": "Specifica l'area di interesse",
+        "fileLabel": "Allega CV e certificazioni",
+        "uploadButton": "Carica un file",
+        "dragDrop": "o trascina e rilascia",
+        "changeFile": "Cambia file",
+        "observationsLabel": "Osservazioni",
+        "observationsPlaceholder": "Informazioni aggiuntive rilevanti...",
+        "submitButton": "INVIA CANDIDATURA",
+        "submittingButton": "Inviando...",
+        "successTitle": "Candidatura inviata con successo!",
+        "successMessage": "Abbiamo ricevuto le tue informazioni correttamente.",
+        "registrationNumber": "Numero di registrazione",
+        "sendAnother": "Invia un'altra candidatura",
+        "backHome": "Torna alla home",
+        "validationError": "Si prega di compilare tutti i campi obbligatori contrassegnati con *",
+        "submissionError": "Si è verificato un errore durante il salvataggio della tua candidatura. Riprova."
+    },
+    "LanguageSelector": {
+        "label": "Lingua"
+    }
+}

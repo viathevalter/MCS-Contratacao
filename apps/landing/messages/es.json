@@ -1,0 +1,43 @@
+{
+    "Index": {
+        "title": "NADIE TE CONECTA CON TALENTO INDUSTRIAL COMO NOSOTROS",
+        "subtitle": "En Wolter’s Contratação, nos especializamos en la contratación y suministro de mano de obra calificada, conectando empresas con profesionales capacitados para proyectos industriales."
+    },
+    "CandidateForm": {
+        "title": "Ofertas de Empleo",
+        "subtitle": "Oportunidades de trabajo en la Unión Europea. Complete el formulario para iniciar su proceso de postulación.",
+        "personalData": "Datos Personales",
+        "nameLabel": "Nombre Completo",
+        "namePlaceholder": "Su nombre y apellido",
+        "phoneLabel": "Teléfono / Whatsapp",
+        "emailLabel": "Correo electrónico",
+        "locationLabel": "¿Dónde está ubicado actualmente?",
+        "locationPlaceholder": "Ciudad, País",
+        "profileData": "Perfil Profesional",
+        "documentationLabel": "¿Qué clase de documentación tiene?",
+        "documentationPlaceholder": "Especifique su documentación",
+        "languagesLabel": "¿Qué idiomas habla?",
+        "languageOtherPlaceholder": "Otro idioma (opcional)",
+        "interestLabel": "Interés y Documentos",
+        "offerLabel": "Seleccione la oferta de su interés",
+        "offerPlaceholder": "Especifique el área de interés",
+        "fileLabel": "Adjuntar hoja de vida y certificaciones",
+        "uploadButton": "Subir un archivo",
+        "dragDrop": "o arrastrar y soltar",
+        "changeFile": "Cambiar archivo",
+        "observationsLabel": "Observaciones",
+        "observationsPlaceholder": "Información adicional relevante...",
+        "submitButton": "ENVIAR SOLICITUD",
+        "submittingButton": "Enviando...",
+        "successTitle": "¡Solicitud enviada con éxito!",
+        "successMessage": "Hemos recibido su información correctamente.",
+        "registrationNumber": "Número de registro",
+        "sendAnother": "Enviar otra solicitud",
+        "backHome": "Volver al inicio",
+        "validationError": "Por favor, complete todos los campos obligatorios marcados con *",
+        "submissionError": "Hubo un error al guardar su solicitud. Intente nuevamente."
+    },
+    "LanguageSelector": {
+        "label": "Idioma"
+    }
+}
