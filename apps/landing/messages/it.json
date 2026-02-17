@@ -35,7 +35,23 @@
         "sendAnother": "Invia un'altra candidatura",
         "backHome": "Torna alla home",
         "validationError": "Si prega di compilare tutti i campi obbligatori contrassegnati con *",
-        "submissionError": "Si è verificato un errore durante il salvataggio della tua candidatura. Riprova."
+        "submissionError": "Si è verificato un errore durante il salvataggio della tua candidatura. Riprova.",
+        "options": {
+            "docs": {
+                "passport_ue": "Passaporto UE (Europeo)",
+                "work_permit": "Permesso di lavoro valido",
+                "student_visa": "Visto studentesco",
+                "processing": "In elaborazione / Senza documenti",
+                "other": "Altro"
+            },
+            "languages": {
+                "spanish": "Spagnolo",
+                "english": "Inglese",
+                "portuguese": "Portoghese",
+                "french": "Francese",
+                "german": "Tedesco"
+            }
+        }
     },
     "LanguageSelector": {
         "label": "Lingua"

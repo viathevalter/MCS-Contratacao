@@ -11,12 +11,13 @@ import { Input } from '../../../components/ui/Input';
 import { Card } from '../../../components/ui/Card';
 
 // Constants for form options
-const DOCUMENTATION_OPTIONS = [
-    "Pasaporte de la UE (Europeo)",
-    "Permiso de trabajo válido",
-    "Visa de estudiante",
-    "En trámite / Sin documentos",
-    "Otro"
+// Mapping for options to support translation while keeping DB values consistent
+const DOCUMENTATION_MAP = [
+    { value: "Pasaporte de la UE (Europeo)", key: "passport_ue" },
+    { value: "Permiso de trabajo válido", key: "work_permit" },
+    { value: "Visa de estudiante", key: "student_visa" },
+    { value: "En trámite / Sin documentos", key: "processing" },
+    { value: "Otro", key: "other" }
 ];
 
 const OFFER_OPTIONS = [
@@ -34,12 +35,12 @@ const OFFER_OPTIONS = [
     "Otro"
 ];
 
-const LANGUAGE_OPTIONS = [
-    "Español",
-    "Inglés",
-    "Portugués",
-    "Francés",
-    "Alemán"
+const LANGUAGE_MAP = [
+    { value: "Español", key: "spanish" },
+    { value: "Inglés", key: "english" },
+    { value: "Portugués", key: "portuguese" },
+    { value: "Francés", key: "french" },
+    { value: "Alemán", key: "german" }
 ];
 
 interface FormState {
@@ -348,10 +349,10 @@ export default function CandidateForm() {
                             <div>
                                 <label className="block text-sm font-semibold text-slate-700 mb-4">{t('documentationLabel')} <span className="text-red-500">*</span></label>
                                 <div className="space-y-3">
-                                    {DOCUMENTATION_OPTIONS.map((opt) => {
-                                        const isSelected = formData.documentation === opt;
+                                    {DOCUMENTATION_MAP.map((opt) => {
+                                        const isSelected = formData.documentation === opt.value;
                                         return (
-                                            <label key={opt}
+                                            <label key={opt.value}
                                                 className={`flex items-center p-4 border rounded-xl cursor-pointer transition-all duration-200 group
                             ${isSelected
                                                         ? 'bg-blue-50 border-[#004F9F] ring-1 ring-[#004F9F] shadow-sm'
@@ -362,7 +363,7 @@ export default function CandidateForm() {
                                                 <input
                                                     type="radio"
                                                     name="documentation"
-                                                    value={opt}
+                                                    value={opt.value}
                                                     checked={isSelected}
                                                     onChange={handleInputChange}
                                                     className="hidden"
@@ -372,7 +373,7 @@ export default function CandidateForm() {
                         `}>
                                                     {isSelected && <div className="w-2 h-2 rounded-full bg-white" />}
                                                 </div>
-                                                <span className={`text-sm font-medium ${isSelected ? 'text-[#002244]' : 'text-slate-700'}`}>{opt}</span>
+                                                <span className={`text-sm font-medium ${isSelected ? 'text-[#002244]' : 'text-slate-700'}`}>{t(`options.docs.${opt.key}`)}</span>
                                             </label>
                                         );
                                     })}
@@ -393,10 +394,10 @@ export default function CandidateForm() {
                             <div className="border-t border-slate-100 pt-6">
                                 <label className="block text-sm font-semibold text-slate-700 mb-4">{t('languagesLabel')} <span className="text-slate-500 font-normal">(Selección Múltiple)</span> <span className="text-red-500">*</span></label>
                                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                                    {LANGUAGE_OPTIONS.map((lang) => {
-                                        const isSelected = formData.languages.has(lang);
+                                    {LANGUAGE_MAP.map((lang) => {
+                                        const isSelected = formData.languages.has(lang.value);
                                         return (
-                                            <label key={lang}
+                                            <label key={lang.value}
                                                 className={`flex items-center p-3 border rounded-lg cursor-pointer transition-all duration-200 select-none
                             ${isSelected
                                                         ? 'bg-blue-50 border-[#004F9F] text-[#002244] shadow-sm'
@@ -407,7 +408,7 @@ export default function CandidateForm() {
                                                 <input
                                                     type="checkbox"
                                                     checked={isSelected}
-                                                    onChange={() => handleCheckboxChange(lang)}
+                                                    onChange={() => handleCheckboxChange(lang.value)}
                                                     className="hidden"
                                                 />
                                                 <div className={`w-5 h-5 rounded border flex items-center justify-center mr-3 transition-colors flex-shrink-0
@@ -417,7 +418,7 @@ export default function CandidateForm() {
                                                         <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7" /></svg>
                                                     )}
                                                 </div>
-                                                <span className="text-sm font-medium">{lang}</span>
+                                                <span className="text-sm font-medium">{t(`options.languages.${lang.key}`)}</span>
                                             </label>
                                         );
                                     })}

@@ -35,7 +35,23 @@
         "sendAnother": "Enviar otra solicitud",
         "backHome": "Volver al inicio",
         "validationError": "Por favor, complete todos los campos obligatorios marcados con *",
-        "submissionError": "Hubo un error al guardar su solicitud. Intente nuevamente."
+        "submissionError": "Hubo un error al guardar su solicitud. Intente nuevamente.",
+        "options": {
+            "docs": {
+                "passport_ue": "Pasaporte de la UE (Europeo)",
+                "work_permit": "Permiso de trabajo válido",
+                "student_visa": "Visa de estudiante",
+                "processing": "En trámite / Sin documentos",
+                "other": "Otro"
+            },
+            "languages": {
+                "spanish": "Español",
+                "english": "Inglés",
+                "portuguese": "Portugués",
+                "french": "Francés",
+                "german": "Alemán"
+            }
+        }
     },
     "LanguageSelector": {
         "label": "Idioma"

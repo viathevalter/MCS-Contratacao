@@ -35,7 +35,23 @@
         "sendAnother": "Envoyer une autre candidature",
         "backHome": "Retour à l'accueil",
         "validationError": "Veuillez remplir tous les champs obligatoires marqués d'un *",
-        "submissionError": "Une erreur s'est produite lors de l'enregistrement de votre candidature. Veuillez réessayer."
+        "submissionError": "Une erreur s'est produite lors de l'enregistrement de votre candidature. Veuillez réessayer.",
+        "options": {
+            "docs": {
+                "passport_ue": "Passeport UE (Européen)",
+                "work_permit": "Permis de travail valide",
+                "student_visa": "Visa étudiant",
+                "processing": "En cours / Sans documents",
+                "other": "Autre"
+            },
+            "languages": {
+                "spanish": "Espagnol",
+                "english": "Anglais",
+                "portuguese": "Portugais",
+                "french": "Français",
+                "german": "Allemand"
+            }
+        }
     },
     "LanguageSelector": {
         "label": "Langue"

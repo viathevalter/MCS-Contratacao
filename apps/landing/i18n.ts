@@ -2,7 +2,7 @@ import { getRequestConfig } from 'next-intl/server';
 
 export default getRequestConfig(async ({ requestLocale }) => {
     let locale = await requestLocale;
-    if (!locale || !['es', 'pt', 'it', 'fr'].includes(locale)) locale = 'es';
+    if (!locale || !['es', 'pt', 'it', 'fr', 'en'].includes(locale)) locale = 'es';
 
     return {
         locale,

@@ -35,7 +35,23 @@
         "sendAnother": "Enviar outra candidatura",
         "backHome": "Voltar ao início",
         "validationError": "Por favor, preencha todos os campos obrigatórios marcados com *",
-        "submissionError": "Houve um erro ao salvar sua candidatura. Tente novamente."
+        "submissionError": "Houve um erro ao salvar sua solicitação. Tente novamente.",
+        "options": {
+            "docs": {
+                "passport_ue": "Passaporte da UE (Europeu)",
+                "work_permit": "Permissão de trabalho válida",
+                "student_visa": "Visto de estudante",
+                "processing": "Em trâmite / Sem documentos",
+                "other": "Outro"
+            },
+            "languages": {
+                "spanish": "Espanhol",
+                "english": "Inglês",
+                "portuguese": "Português",
+                "french": "Francês",
+                "german": "Alemão"
+            }
+        }
     },
     "LanguageSelector": {
         "label": "Idioma"

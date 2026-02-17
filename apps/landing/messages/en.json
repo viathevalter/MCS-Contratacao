@@ -1,0 +1,59 @@
+{
+    "Index": {
+        "title": "NO ONE CONNECTS YOU WITH INDUSTRIAL TALENT LIKE WE DO",
+        "subtitle": "At Wolter's Contratação, we specialize in recruiting and supplying skilled labor, connecting companies with trained professionals for industrial projects."
+    },
+    "CandidateForm": {
+        "title": "Job Offers",
+        "subtitle": "Work opportunities in the European Union. Complete the form to start your application process.",
+        "personalData": "Personal Data",
+        "nameLabel": "Full Name",
+        "namePlaceholder": "Your first and last name",
+        "phoneLabel": "Phone / Whatsapp",
+        "emailLabel": "Email Address",
+        "locationLabel": "Where are you currently located?",
+        "locationPlaceholder": "City, Country",
+        "profileData": "Professional Profile",
+        "documentationLabel": "What kind of documentation do you have?",
+        "documentationPlaceholder": "Specify your documentation",
+        "languagesLabel": "Which languages do you speak?",
+        "languageOtherPlaceholder": "Other language (optional)",
+        "interestLabel": "Interest and Documents",
+        "offerLabel": "Select the offer of your interest",
+        "offerPlaceholder": "Specify the area of interest",
+        "fileLabel": "Attach CV and certifications",
+        "uploadButton": "Upload a file",
+        "dragDrop": "or drag and drop",
+        "changeFile": "Change file",
+        "observationsLabel": "Observations",
+        "observationsPlaceholder": "Additional relevant information...",
+        "submitButton": "SEND APPLICATION",
+        "submittingButton": "Sending...",
+        "successTitle": "Application sent successfully!",
+        "successMessage": "We have received your information correctly.",
+        "registrationNumber": "Registration Number",
+        "sendAnother": "Send another application",
+        "backHome": "Back to Home",
+        "validationError": "Please complete all required fields marked with *",
+        "submissionError": "There was an error saving your application. Please try again.",
+        "options": {
+            "docs": {
+                "passport_ue": "EU Passport (European)",
+                "work_permit": "Valid Work Permit",
+                "student_visa": "Student Visa",
+                "processing": "In Process / No Documents",
+                "other": "Other"
+            },
+            "languages": {
+                "spanish": "Spanish",
+                "english": "English",
+                "portuguese": "Portuguese",
+                "french": "French",
+                "german": "German"
+            }
+        }
+    },
+    "LanguageSelector": {
+        "label": "Language"
+    }
+}
