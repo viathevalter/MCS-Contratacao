@@ -23,7 +23,7 @@ export default function LanguageSelector() {
             <span className="sr-only">{t('label')}</span>
             <select
                 defaultValue={locale}
-                className="appearance-none bg-transparent py-2 pl-3 pr-8 text-sm font-medium border border-slate-200 rounded-lg hover:border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer"
+                className="appearance-none bg-transparent py-1 pl-2 pr-6 text-xs md:py-2 md:pl-3 md:pr-8 md:text-sm font-medium border border-slate-200 rounded-lg hover:border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer"
                 onChange={onSelectChange}
                 disabled={isPending}
             >
@@ -33,8 +33,8 @@ export default function LanguageSelector() {
                 <option value="it">🇮🇹 IT</option>
                 <option value="fr">🇫🇷 FR</option>
             </select>
-            <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-slate-500">
-                <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-1 md:px-2 text-slate-500">
+                <svg className="h-3 w-3 md:h-4 md:w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
                 </svg>
             </div>
