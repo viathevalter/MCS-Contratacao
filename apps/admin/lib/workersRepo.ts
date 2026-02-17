@@ -79,6 +79,27 @@ export const workersRepo = {
     return data as Worker | null;
   },
 
+  async findWorkerByContact(phone: string, email?: string): Promise<Worker | null> {
+    let query = supabase
+      .from('workers')
+      .select('*');
+
+    if (email) {
+      query = query.or(`phone.eq.${phone},email.eq.${email}`);
+    } else {
+      query = query.eq('phone', phone);
+    }
+
+    const { data, error } = await query.limit(1).maybeSingle();
+
+    if (error) {
+      console.error('Error finding worker by contact:', error);
+      return null;
+    }
+
+    return data as Worker | null;
+  },
+
   async updateWorker(id: string, updates: Partial<Worker>): Promise<Worker | null> {
     const { data, error } = await supabase
       .from('workers')

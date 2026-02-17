@@ -55,6 +55,7 @@ interface FormState {
     languageOther: string;
     observations: string;
     fileMeta: FileMetadata | null;
+    attachedFile: File | null;
 }
 
 const INITIAL_STATE: FormState = {
@@ -69,7 +70,8 @@ const INITIAL_STATE: FormState = {
     languages: new Set(),
     languageOther: '',
     observations: '',
-    fileMeta: null
+    fileMeta: null,
+    attachedFile: null
 };
 
 import { useTranslations } from 'next-intl';
@@ -119,7 +121,8 @@ export default function CandidateForm() {
                     name: file.name,
                     size: file.size,
                     type: file.type
-                }
+                },
+                attachedFile: file
             }));
         }
     };
@@ -154,6 +157,14 @@ export default function CandidateForm() {
         }
 
         try {
+            let uploadedPath = undefined;
+            if (formData.attachedFile) {
+                const path = await stagingRepo.uploadFile(formData.attachedFile);
+                if (path) {
+                    uploadedPath = path;
+                }
+            }
+
             const submission = await stagingRepo.createSubmission(
                 formData.name,
                 formData.phone,
@@ -164,7 +175,10 @@ export default function CandidateForm() {
                     languages: finalLangs,
                     offer: finalOffersString, // Saving as comma-separated string
                     observations: formData.observations || undefined,
-                    file_meta: formData.fileMeta || undefined
+                    file_meta: formData.fileMeta ? {
+                        ...formData.fileMeta,
+                        path: uploadedPath
+                    } : undefined
                 }
             );
 

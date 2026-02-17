@@ -5,7 +5,7 @@ import CommunicationPanel from '../../components/CommunicationPanel';
 import { stagingRepo } from '../../lib/stagingRepo';
 import { workersRepo } from '../../lib/workersRepo';
 import { configRepo } from '../../lib/configRepo';
-import { CandidateSubmission, CandidateStatus, AppConfig } from '../../types';
+import { CandidateSubmission, CandidateStatus, AppConfig, Worker } from '../../types';
 
 const CandidateDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -13,6 +13,7 @@ const CandidateDetail: React.FC = () => {
   const [submission, setSubmission] = useState<CandidateSubmission | null>(null);
   const [internalNotes, setInternalNotes] = useState('');
   const [isSaving, setIsSaving] = useState(false);
+  const [duplicateWorker, setDuplicateWorker] = useState<Worker | null>(null);
 
   // Conversion Modal State
   const [showConvertModal, setShowConvertModal] = useState(false);
@@ -63,10 +64,10 @@ const CandidateDetail: React.FC = () => {
           setSubmission(data);
           setInternalNotes(data.internal_notes || '');
 
-          // Check if already converted
-          const existingWorker = await workersRepo.getWorkerBySubmissionId(data.id);
-          if (existingWorker) {
-            // Optional: Redirect to worker or show alert
+          // Check for duplicates
+          const workerByContact = await workersRepo.findWorkerByContact(data.raw_phone, data.raw_email);
+          if (workerByContact) {
+            setDuplicateWorker(workerByContact);
           }
         } else {
           navigate('/admin/candidatos');
@@ -107,6 +108,19 @@ const CandidateDetail: React.FC = () => {
     if (submission) {
       const updated = await stagingRepo.updateSubmission(submission.id, updates);
       if (updated) setSubmission(updated);
+    }
+  };
+
+  const handleDeleteSubmission = async () => {
+    if (!submission) return;
+
+    if (confirm("¿Estás seguro de que quieres eliminar este candidato? Esta acción no se puede deshacer.")) {
+      const deleted = await stagingRepo.deleteSubmission(submission.id);
+      if (deleted) {
+        navigate('/admin/candidatos');
+      } else {
+        alert("Error al eliminar el candidato.");
+      }
     }
   };
 
@@ -313,6 +327,27 @@ const CandidateDetail: React.FC = () => {
             </div>
           </div>
 
+          {/* Duplicate Warning */}
+          {duplicateWorker && (
+            <div className="bg-orange-50 p-4 rounded-xl border border-orange-200 flex items-start">
+              <svg className="w-5 h-5 text-orange-500 mr-3 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+              </svg>
+              <div>
+                <h3 className="text-sm font-bold text-orange-800">Posible Duplicado Detectado</h3>
+                <p className="text-sm text-orange-700 mt-1">
+                  Este candidato comparte teléfono o email con el trabajador existente <strong>{duplicateWorker.full_name}</strong>.
+                </p>
+                <button
+                  onClick={() => navigate(`/admin/trabajadores/${duplicateWorker.id}`)}
+                  className="mt-2 text-sm text-orange-800 underline hover:text-orange-900 font-medium"
+                >
+                  Ver Perfil del Trabajador Existente →
+                </button>
+              </div>
+            </div>
+          )}
+
           {/* Personal Data Card (New) */}
           <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-200 relative">
             <div className="flex justify-between items-start mb-4 border-b border-slate-100 pb-2">
@@ -435,6 +470,20 @@ const CandidateDetail: React.FC = () => {
                     </svg>
                     {submission.raw_payload.file_meta.name}
                     <span className="ml-2 text-slate-400 text-xs">({(submission.raw_payload.file_meta.size / 1024).toFixed(1)} KB)</span>
+                    {submission.raw_payload.file_meta.path && (
+                      <a
+                        href={stagingRepo.getFileUrl(submission.raw_payload.file_meta.path)}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="ml-auto text-brand-600 hover:text-brand-800 text-xs font-bold flex items-center bg-white px-2 py-1 rounded border border-brand-200 shadow-sm"
+                        title="Descargar Archivo"
+                      >
+                        <svg className="w-4 h-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                        </svg>
+                        DESCARGAR
+                      </a>
+                    )}
                   </dd>
                 </div>
               )}
@@ -506,6 +555,23 @@ const CandidateDetail: React.FC = () => {
                 {submission.status === 'rejected' ? '✕ Rechazado' : 'RECHAZAR'}
               </button>
             </div>
+          </div>
+
+          {/* Delete Action */}
+          <div className="bg-red-50 p-6 rounded-xl shadow-sm border border-red-100">
+            <h3 className="text-sm font-bold text-red-800 uppercase tracking-wider mb-2">Zona de Peligro</h3>
+            <p className="text-xs text-red-600 mb-4">
+              Si este candidato es un duplicado o spam, puedes eliminarlo permanentemente.
+            </p>
+            <button
+              onClick={handleDeleteSubmission}
+              className="w-full flex items-center justify-center px-4 py-2 border border-red-200 rounded-md shadow-sm text-sm font-medium text-red-700 bg-white hover:bg-red-50 hover:border-red-300 transition-colors"
+            >
+              <svg className="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+              </svg>
+              ELIMINAR CANDIDATO
+            </button>
           </div>
 
           {/* Internal Notes */}

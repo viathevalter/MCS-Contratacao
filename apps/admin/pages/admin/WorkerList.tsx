@@ -18,21 +18,60 @@ const WorkerList: React.FC = () => {
   // Filters
   const [statusFilter, setStatusFilter] = useState<WorkerStatus | 'all'>('all');
   const [searchTerm, setSearchTerm] = useState('');
+  const [selectedProfiles, setSelectedProfiles] = useState<string[]>([]);
+  const [dateRange, setDateRange] = useState<{ start: string; end: string }>({ start: '', end: '' });
+  const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
+  const dropdownRef = React.useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    loadData();
+    // Click outside listener
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setIsProfileDropdownOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   const loadData = async () => {
     const data = await workersRepo.listWorkers();
     setWorkers(data);
   };
 
-  useEffect(() => {
-    loadData();
-  }, []);
+  // Unique Profiles
+  const uniqueProfiles = React.useMemo(() => {
+    const profiles = new Set<string>();
+    workers.forEach(w => {
+      if (w.profession_primary) {
+        w.profession_primary.split(',').forEach(p => profiles.add(p.trim()));
+      }
+    });
+    return Array.from(profiles).sort();
+  }, [workers]);
 
   useEffect(() => {
     let result = [...workers];
+    // ... existing filters ...
 
     if (statusFilter !== 'all') {
       result = result.filter(w => w.status === statusFilter);
+    }
+
+    if (selectedProfiles.length > 0) {
+      result = result.filter(w =>
+        w.profession_primary && selectedProfiles.some(profile => w.profession_primary.includes(profile))
+      );
+    }
+
+    if (dateRange.start) {
+      result = result.filter(w => new Date(w.created_at) >= new Date(dateRange.start));
+    }
+    if (dateRange.end) {
+      const endDate = new Date(dateRange.end);
+      endDate.setHours(23, 59, 59, 999);
+      result = result.filter(w => new Date(w.created_at) <= endDate);
     }
 
     if (searchTerm.trim()) {
@@ -41,12 +80,12 @@ const WorkerList: React.FC = () => {
         w.full_name.toLowerCase().includes(lowerTerm) ||
         w.worker_code.toLowerCase().includes(lowerTerm) ||
         w.phone.includes(lowerTerm) ||
-        w.profession_primary.toLowerCase().includes(lowerTerm)
+        (w.profession_primary && w.profession_primary.toLowerCase().includes(lowerTerm))
       );
     }
 
     setFilteredWorkers(result);
-  }, [workers, statusFilter, searchTerm]);
+  }, [workers, statusFilter, searchTerm, selectedProfiles, dateRange]);
 
 
 
@@ -97,30 +136,111 @@ const WorkerList: React.FC = () => {
         />
 
         {/* Filters */}
-        <div className="bg-white p-4 rounded-lg shadow-sm border border-slate-200 grid grid-cols-1 md:grid-cols-3 gap-4">
-          <Input
-            label="Buscar"
-            placeholder="Nombre, código, teléfono..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            leftIcon={
-              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-              </svg>
-            }
-          />
+        <div className="bg-white p-4 rounded-lg shadow-sm border border-slate-200 grid grid-cols-1 md:grid-cols-12 gap-4">
 
-          <Select
-            label="Estado"
-            value={statusFilter}
-            onChange={(e) => setStatusFilter(e.target.value as any)}
-            options={[
-              { value: 'all', label: 'Todos' },
-              { value: 'active', label: 'Activo' },
-              { value: 'standby', label: 'Standby' },
-              { value: 'blocked', label: 'Bloqueado' }
-            ]}
-          />
+          {/* Status - 2 cols */}
+          <div className="md:col-span-2">
+            <Select
+              label="Estado"
+              value={statusFilter}
+              onChange={(e) => setStatusFilter(e.target.value as any)}
+              options={[
+                { value: 'all', label: 'Todos' },
+                { value: 'active', label: 'Activo' },
+                { value: 'standby', label: 'Standby' },
+                { value: 'blocked', label: 'Bloqueado' }
+              ]}
+            />
+          </div>
+
+          {/* Date Range - 3 cols */}
+          <div className="md:col-span-3">
+            <label className="block text-xs font-semibold text-slate-500 mb-1">Período</label>
+            <div className="flex items-center gap-1">
+              <input
+                type="date"
+                className="w-full text-xs rounded border-slate-300 bg-slate-50 py-2 px-1 focus:ring-brand-500 focus:border-brand-500"
+                value={dateRange.start}
+                onChange={(e) => setDateRange(prev => ({ ...prev, start: e.target.value }))}
+                title="Desde"
+              />
+              <span className="text-slate-400">-</span>
+              <input
+                type="date"
+                className="w-full text-xs rounded border-slate-300 bg-slate-50 py-2 px-1 focus:ring-brand-500 focus:border-brand-500"
+                value={dateRange.end}
+                onChange={(e) => setDateRange(prev => ({ ...prev, end: e.target.value }))}
+                title="Hasta"
+              />
+            </div>
+          </div>
+
+          {/* Multi-select Profile - 4 cols */}
+          <div className="md:col-span-4 relative" ref={dropdownRef}>
+            <label className="block text-xs font-semibold text-slate-500 mb-1">Profesión (Multi-selección)</label>
+            <button
+              onClick={() => setIsProfileDropdownOpen(!isProfileDropdownOpen)}
+              className="w-full text-left text-sm rounded border border-slate-300 bg-slate-50 py-2 px-3 focus:ring-brand-500 focus:border-brand-500 flex justify-between items-center"
+            >
+              <span className="truncate">
+                {selectedProfiles.length === 0
+                  ? "Todas las profesiones"
+                  : `${selectedProfiles.length} seleccionada${selectedProfiles.length !== 1 ? 's' : ''}`
+                }
+              </span>
+              <svg className="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path></svg>
+            </button>
+
+            {isProfileDropdownOpen && (
+              <div className="absolute z-10 mt-1 w-full bg-white shadow-lg rounded-md border border-slate-200 max-h-60 overflow-y-auto">
+                <div className="p-2 space-y-1">
+                  {uniqueProfiles.map((profile) => (
+                    <label key={profile} className="flex items-center px-2 py-1.5 hover:bg-slate-50 rounded cursor-pointer">
+                      <input
+                        type="checkbox"
+                        checked={selectedProfiles.includes(profile)}
+                        onChange={() => {
+                          setSelectedProfiles(prev =>
+                            prev.includes(profile)
+                              ? prev.filter(p => p !== profile)
+                              : [...prev, profile]
+                          );
+                        }}
+                        className="rounded text-brand-600 focus:ring-brand-500 mr-2 h-4 w-4 border-slate-300"
+                      />
+                      <span className="text-xs text-slate-700 truncate">{profile}</span>
+                    </label>
+                  ))}
+                  {uniqueProfiles.length === 0 && (
+                    <div className="text-center text-xs text-slate-400 p-2">No hay perfiles disponibles</div>
+                  )}
+                </div>
+                <div className="p-2 border-t border-slate-100 bg-slate-50 flex justify-end">
+                  <button
+                    onClick={() => setSelectedProfiles([])}
+                    className="text-xs text-brand-600 hover:text-brand-800 font-medium"
+                  >
+                    Limpiar
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* Search - 3 cols */}
+          <div className="md:col-span-3">
+            <Input
+              label="Buscar"
+              placeholder="Nombre, código, teléfono..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              leftIcon={
+                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
+              }
+            />
+          </div>
         </div>
 
         {/* Table */}

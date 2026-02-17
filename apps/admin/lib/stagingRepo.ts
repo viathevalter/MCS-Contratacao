@@ -167,5 +167,13 @@ export const stagingRepo = {
       return false;
     }
     return true;
+  },
+
+  getFileUrl(path: string): string {
+    const { data } = supabase.storage
+      .from('applications')
+      .getPublicUrl(path);
+
+    return data.publicUrl;
   }
 };

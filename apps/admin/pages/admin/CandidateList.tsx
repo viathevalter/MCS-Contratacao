@@ -27,7 +27,7 @@ const CandidateList: React.FC = () => {
 
   // Filters
   const [statusFilter, setStatusFilter] = useState<CandidateStatus | 'all'>('all');
-  const [daysFilter, setDaysFilter] = useState<number>(30);
+  const [dateRange, setDateRange] = useState<{ start: string; end: string }>({ start: '', end: '' });
   const [searchTerm, setSearchTerm] = useState('');
 
   // Multi-select Offer Filter
@@ -50,7 +50,7 @@ const CandidateList: React.FC = () => {
 
   useEffect(() => {
     applyFilters();
-  }, [submissions, statusFilter, daysFilter, searchTerm, offerFilter]);
+  }, [submissions, statusFilter, dateRange, searchTerm, offerFilter]);
 
   const loadData = async () => {
     const data = await stagingRepo.listSubmissions();
@@ -82,11 +82,14 @@ const CandidateList: React.FC = () => {
       result = result.filter(s => s.status === statusFilter);
     }
 
-    // 2. Date Filter
-    if (daysFilter > 0) {
-      const dateLimit = new Date();
-      dateLimit.setDate(dateLimit.getDate() - daysFilter);
-      result = result.filter(s => new Date(s.created_at) >= dateLimit);
+    // 2. Date Range Filter
+    if (dateRange.start) {
+      result = result.filter(s => new Date(s.created_at) >= new Date(dateRange.start));
+    }
+    if (dateRange.end) {
+      const endDate = new Date(dateRange.end);
+      endDate.setHours(23, 59, 59, 999);
+      result = result.filter(s => new Date(s.created_at) <= endDate);
     }
 
     // 3. Search Filter (Name, Phone, Email)
@@ -184,19 +187,26 @@ const CandidateList: React.FC = () => {
             </select>
           </div>
 
-          {/* Period - 2 cols */}
-          <div className="md:col-span-2">
+          {/* Date Range - 3 cols (Expanded) */}
+          <div className="md:col-span-3">
             <label className="block text-xs font-semibold text-slate-500 mb-1">Período</label>
-            <select
-              value={daysFilter}
-              onChange={(e) => setDaysFilter(Number(e.target.value))}
-              className="w-full text-sm rounded border-slate-300 bg-slate-50 py-2 px-3 focus:ring-brand-500 focus:border-brand-500"
-            >
-              <option value={7}>Últimos 7 días</option>
-              <option value={30}>Últimos 30 días</option>
-              <option value={90}>Últimos 90 días</option>
-              <option value={0}>Todo el historial</option>
-            </select>
+            <div className="flex items-center gap-1">
+              <input
+                type="date"
+                className="w-full text-xs rounded border-slate-300 bg-slate-50 py-2 px-1 focus:ring-brand-500 focus:border-brand-500"
+                value={dateRange.start}
+                onChange={(e) => setDateRange(prev => ({ ...prev, start: e.target.value }))}
+                title="Desde"
+              />
+              <span className="text-slate-400">-</span>
+              <input
+                type="date"
+                className="w-full text-xs rounded border-slate-300 bg-slate-50 py-2 px-1 focus:ring-brand-500 focus:border-brand-500"
+                value={dateRange.end}
+                onChange={(e) => setDateRange(prev => ({ ...prev, end: e.target.value }))}
+                title="Hasta"
+              />
+            </div>
           </div>
 
           {/* Offer Filter (Multi) - 4 cols */}
@@ -242,8 +252,8 @@ const CandidateList: React.FC = () => {
             )}
           </div>
 
-          {/* Search - 4 cols */}
-          <div className="md:col-span-4">
+          {/* Search - 3 cols (Reduced) */}
+          <div className="md:col-span-3">
             <label className="block text-xs font-semibold text-slate-500 mb-1">Buscar</label>
             <div className="relative">
               <input

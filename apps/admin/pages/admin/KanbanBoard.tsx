@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import {
   DndContext,
@@ -13,7 +13,7 @@ import {
   DragEndEvent,
 } from '@dnd-kit/core';
 import { arrayMove, sortableKeyboardCoordinates } from '@dnd-kit/sortable';
-import { FileText, MapPin, Calendar, Plus } from 'lucide-react';
+import { FileText, MapPin, Calendar, Plus, Search, Filter } from 'lucide-react';
 import AdminLayout from '../../components/AdminLayout';
 import { stagingRepo } from '../../lib/stagingRepo';
 import { CandidateSubmission, KanbanStage } from '../../types';
@@ -32,6 +32,13 @@ const KanbanBoard: React.FC = () => {
   const [stageName, setStageName] = useState('');
   const [stageColor, setStageColor] = useState('#64748b'); // Default slate-500
 
+  // Filter States
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedProfiles, setSelectedProfiles] = useState<string[]>([]);
+  const [dateRange, setDateRange] = useState<{ start: string; end: string }>({ start: '', end: '' });
+  const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
+  const dropdownRef = React.useRef<HTMLDivElement>(null);
+
   const sensors = useSensors(
     useSensor(PointerSensor, {
       activationConstraint: {
@@ -46,7 +53,19 @@ const KanbanBoard: React.FC = () => {
   useEffect(() => {
     loadData();
     const interval = setInterval(loadData, 5000); // Keep polling for updates
-    return () => clearInterval(interval);
+
+    // Click outside listener
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setIsProfileDropdownOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+
+    return () => {
+      clearInterval(interval);
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
   }, []);
 
   const loadData = async () => {
@@ -58,6 +77,59 @@ const KanbanBoard: React.FC = () => {
 
     // Sort stages by position
     setStages(stagesData.sort((a, b) => a.position - b.position));
+  };
+
+  // Get unique profiles (offers) for filter, splitting comma-separated values
+  const uniqueProfiles = useMemo(() => {
+    const profiles = new Set<string>();
+    submissions.forEach(s => {
+      if (s.raw_payload.offer) {
+        // Split by comma, trim whitespace, and add to set
+        s.raw_payload.offer.split(',').forEach(o => profiles.add(o.trim()));
+      }
+    });
+    return Array.from(profiles).sort();
+  }, [submissions]);
+
+  // Filter Logic
+  const filteredSubmissions = useMemo(() => {
+    return submissions.filter(sub => {
+      const matchesSearch =
+        searchTerm === '' ||
+        sub.raw_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        sub.raw_phone.includes(searchTerm) ||
+        (sub.raw_email && sub.raw_email.toLowerCase().includes(searchTerm.toLowerCase()));
+
+      let matchesProfile = true;
+      if (selectedProfiles.length > 0) {
+        // Check if ANY of the selected profiles matches the candidate's offer string
+        // We do a loose check: if selected "Tubero", and candidate is "Soldador, Tubero", it matches.
+        matchesProfile = selectedProfiles.some(profile =>
+          sub.raw_payload.offer.includes(profile)
+        );
+      }
+
+      let matchesDate = true;
+      if (dateRange.start) {
+        matchesDate = matchesDate && new Date(sub.created_at) >= new Date(dateRange.start);
+      }
+      if (dateRange.end) {
+        // Add one day to include the end date fully (or handle time component)
+        const endDate = new Date(dateRange.end);
+        endDate.setHours(23, 59, 59, 999);
+        matchesDate = matchesDate && new Date(sub.created_at) <= endDate;
+      }
+
+      return matchesSearch && matchesProfile && matchesDate;
+    });
+  }, [submissions, searchTerm, selectedProfiles, dateRange]);
+
+  const toggleProfileFilter = (profile: string) => {
+    setSelectedProfiles(prev =>
+      prev.includes(profile)
+        ? prev.filter(p => p !== profile)
+        : [...prev, profile]
+    );
   };
 
   const openAddStageModal = () => {
@@ -200,19 +272,112 @@ const KanbanBoard: React.FC = () => {
         onDragEnd={handleDragEnd}
       >
         <div className="h-[calc(100vh-140px)] flex flex-col">
-          <div className="flex justify-between items-center mb-6">
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
             <h1 className="text-2xl font-bold text-slate-800">Tablero de Procesos</h1>
-            <div className="flex gap-3">
-              <button
-                onClick={openAddStageModal}
-                className="flex items-center gap-2 px-4 py-2 bg-white border border-slate-200 rounded-lg text-slate-600 hover:bg-slate-50 transition-colors text-sm font-medium shadow-sm"
-              >
-                <Plus className="w-4 h-4" />
-                Nueva Etapa
-              </button>
-              <Link to="/admin/candidatos" className="px-4 py-2 bg-brand-600 text-white rounded-lg hover:bg-brand-700 transition-colors text-sm font-medium shadow-sm">
-                Vista de Lista
-              </Link>
+
+            <div className="flex flex-col md:flex-row gap-3 w-full md:w-auto flex-wrap">
+              {/* Search Bar */}
+              <div className="relative">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 w-4 h-4" />
+                <input
+                  type="text"
+                  placeholder="Buscar..."
+                  className="pl-9 pr-4 py-2 border border-slate-200 rounded-lg text-sm w-full md:w-48 focus:outline-none focus:ring-2 focus:ring-brand-500"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                />
+              </div>
+
+              {/* Date Range Inputs */}
+              <div className="flex items-center gap-2 bg-white border border-slate-200 rounded-lg px-2 py-1">
+                <Calendar className="text-slate-400 w-4 h-4" />
+                <input
+                  type="date"
+                  className="text-sm border-none focus:ring-0 p-1 text-slate-600 w-32"
+                  value={dateRange.start}
+                  onChange={(e) => setDateRange(prev => ({ ...prev, start: e.target.value }))}
+                  title="Fecha Inicio"
+                />
+                <span className="text-slate-300">-</span>
+                <input
+                  type="date"
+                  className="text-sm border-none focus:ring-0 p-1 text-slate-600 w-32"
+                  value={dateRange.end}
+                  onChange={(e) => setDateRange(prev => ({ ...prev, end: e.target.value }))}
+                  title="Fecha Fin"
+                />
+              </div>
+
+              {/* Profile Filter (Multi-select) */}
+              <div className="relative" ref={dropdownRef}>
+                <Filter className="absolute left-3 top-2.5 text-slate-400 w-4 h-4" />
+                <button
+                  onClick={() => setIsProfileDropdownOpen(!isProfileDropdownOpen)}
+                  className="pl-9 pr-8 py-2 border border-slate-200 rounded-lg text-sm w-full md:w-64 bg-white focus:outline-none focus:ring-2 focus:ring-brand-500 text-left flex justify-between items-center"
+                >
+                  <span className="truncate block max-w-[180px]">
+                    {selectedProfiles.length === 0
+                      ? "Todos los perfiles"
+                      : `${selectedProfiles.length} seleccionado${selectedProfiles.length !== 1 ? 's' : ''}`
+                    }
+                  </span>
+                  <svg className="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path></svg>
+                </button>
+
+                {isProfileDropdownOpen && (
+                  <div className="absolute z-50 mt-1 w-72 bg-white shadow-xl rounded-md border border-slate-200 max-h-80 overflow-y-auto">
+                    <div className="p-2 border-b border-slate-100 bg-slate-50 sticky top-0">
+                      <input
+                        type="text"
+                        placeholder="Filtrar lista..."
+                        className="w-full text-xs px-2 py-1 border border-slate-300 rounded focus:border-brand-500 focus:ring-1 focus:ring-brand-500"
+                        onClick={(e) => e.stopPropagation()}
+                      />
+                    </div>
+                    <div className="p-2 space-y-1">
+                      {uniqueProfiles.map((profile) => (
+                        <label key={profile} className="flex items-start px-2 py-2 hover:bg-slate-50 rounded cursor-pointer transition-colors">
+                          <input
+                            type="checkbox"
+                            checked={selectedProfiles.includes(profile)}
+                            onChange={() => toggleProfileFilter(profile)}
+                            className="rounded text-brand-600 focus:ring-brand-500 mt-0.5 mr-2 h-4 w-4 border-slate-300 flex-shrink-0"
+                          />
+                          <span className="text-sm text-slate-700 leading-tight">{profile}</span>
+                        </label>
+                      ))}
+                      {uniqueProfiles.length === 0 && (
+                        <div className="px-2 py-4 text-center text-xs text-slate-400">
+                          No hay perfiles disponibles
+                        </div>
+                      )}
+                    </div>
+                    <div className="p-2 border-t border-slate-100 bg-slate-50 flex justify-end sticky bottom-0">
+                      <button
+                        onClick={() => setSelectedProfiles([])}
+                        className="text-xs text-brand-600 hover:text-brand-800 font-medium px-2 py-1 hover:bg-brand-50 rounded"
+                      >
+                        Limpiar selección
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              <div className="h-8 w-px bg-slate-200 mx-1 hidden md:block"></div>
+
+              <div className="flex gap-2">
+                <button
+                  onClick={openAddStageModal}
+                  className="flex items-center gap-2 px-4 py-2 bg-white border border-slate-200 rounded-lg text-slate-600 hover:bg-slate-50 transition-colors text-sm font-medium shadow-sm whitespace-nowrap"
+                >
+                  <Plus className="w-4 h-4" />
+                  <span className="hidden sm:inline">Nueva Etapa</span>
+                </button>
+                <Link to="/admin/candidatos" className="px-4 py-2 bg-brand-600 text-white rounded-lg hover:bg-brand-700 transition-colors text-sm font-medium shadow-sm whitespace-nowrap">
+                  Vista de Lista
+                </Link>
+              </div>
             </div>
           </div>
 
@@ -255,7 +420,7 @@ const KanbanBoard: React.FC = () => {
               <KanbanColumn
                 key={stage.id}
                 stage={stage}
-                items={submissions.filter(s => s.status === stage.id)}
+                items={filteredSubmissions.filter(s => s.status === stage.id)}
                 onEdit={openEditStageModal}
                 onDelete={handleDeleteStage}
               />
