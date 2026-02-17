@@ -42,15 +42,7 @@ export function Footer() {
                         </ul>
                     </div>
 
-                    <div>
-                        <h3 className="text-white font-semibold mb-6 text-lg">Links Rápidos</h3>
-                        <ul className="space-y-3 text-base">
-                            <li><Link href="/#quem-somos" className="hover:text-white transition-colors hover:translate-x-1 inline-block">Quem Somos</Link></li>
-                            <li><Link href="/#servicos" className="hover:text-white transition-colors hover:translate-x-1 inline-block">Serviços</Link></li>
-                            <li><Link href="/candidatar" className="hover:text-white transition-colors hover:translate-x-1 inline-block font-medium text-[#FF6B00]">Candidatar-se</Link></li>
-                            <li><a href={`${adminUrl}/login`} className="hover:text-white transition-colors hover:translate-x-1 inline-block opacity-80 hover:opacity-100">Portal do Cliente</a></li>
-                        </ul>
-                    </div>
+
                 </div>
                 <div className="mt-16 border-t border-slate-800 pt-8 text-center text-sm text-slate-500">
                     &copy; {currentYear} Wolter's Contratação. Todos os direitos reservados.
