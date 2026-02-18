@@ -50,6 +50,20 @@
                 "portuguese": "Português",
                 "french": "Francês",
                 "german": "Alemão"
+            },
+            "offers": {
+                "welder_mig_mag": "Soldador MIG/MAG (GMAW/FCAW)",
+                "welder_tig": "Soldador TIG (GTAW)",
+                "welder_smaw": "Soldador Eletrodo Revestido (SMAW)",
+                "pipefitter": "Encanador Industrial / Tubista",
+                "electrician": "Eletricista",
+                "boilermaker": "Caldeireiro / Armador",
+                "mechanic_fitter": "Mecânico Montador",
+                "structural_assembler": "Montador de Estruturas",
+                "painter": "Pintor Industrial",
+                "cnc_operator": "Operador CNC / Torneiro CNC",
+                "insulator": "Isolador Térmico",
+                "other": "Outro"
             }
         }
     },

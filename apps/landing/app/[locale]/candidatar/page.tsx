@@ -20,19 +20,19 @@ const DOCUMENTATION_MAP = [
     { value: "Otro", key: "other" }
 ];
 
-const OFFER_OPTIONS = [
-    "SOLDADOR MIG MAG/GMAW/FCAW",
-    "SOLDADOR TIG/GTAW",
-    "SOLDADOR ELECTRODO REVESTIDA/SMAW",
-    "TUBERO",
-    "ELECTRICISTA",
-    "CALDERERO/ARMADOR",
-    "MECÁNICO MONTADOR",
-    "MONTADOR DE ESTRUCTURA",
-    "PINTOR INDUSTRIAL",
-    "OPERADOR CNC/TORNERO CNC",
-    "AISLADOR TERMICO",
-    "Otro"
+const OFFER_MAP = [
+    { value: "SOLDADOR MIG MAG/GMAW/FCAW", key: "welder_mig_mag" },
+    { value: "SOLDADOR TIG/GTAW", key: "welder_tig" },
+    { value: "SOLDADOR ELECTRODO REVESTIDA/SMAW", key: "welder_smaw" },
+    { value: "TUBERO", key: "pipefitter" },
+    { value: "ELECTRICISTA", key: "electrician" },
+    { value: "CALDERERO/ARMADOR", key: "boilermaker" },
+    { value: "MECÁNICO MONTADOR", key: "mechanic_fitter" },
+    { value: "MONTADOR DE ESTRUCTURA", key: "structural_assembler" },
+    { value: "PINTOR INDUSTRIAL", key: "painter" },
+    { value: "OPERADOR CNC/TORNERO CNC", key: "cnc_operator" },
+    { value: "AISLADOR TERMICO", key: "insulator" },
+    { value: "Otro", key: "other" }
 ];
 
 const LANGUAGE_MAP = [
@@ -450,10 +450,10 @@ export default function CandidateForm() {
                             <div>
                                 <label className="block text-sm font-semibold text-slate-700 mb-4">{t('offerLabel')} <span className="text-slate-500 font-normal">(Selección Múltiple)</span> <span className="text-red-500">*</span></label>
                                 <div className="grid grid-cols-1 gap-3">
-                                    {OFFER_OPTIONS.map((opt) => {
-                                        const isSelected = formData.offers.has(opt);
+                                    {OFFER_MAP.map((opt) => {
+                                        const isSelected = formData.offers.has(opt.value);
                                         return (
-                                            <label key={opt}
+                                            <label key={opt.value}
                                                 className={`flex items-center p-3 border rounded-lg cursor-pointer transition-all duration-200
                             ${isSelected
                                                         ? 'bg-blue-50 border-[#004F9F] text-[#002244] shadow-sm transform translate-x-1'
@@ -463,9 +463,9 @@ export default function CandidateForm() {
                                             >
                                                 <input
                                                     type="checkbox"
-                                                    value={opt}
+                                                    value={opt.value}
                                                     checked={isSelected}
-                                                    onChange={() => handleOfferChange(opt)}
+                                                    onChange={() => handleOfferChange(opt.value)}
                                                     className="hidden"
                                                 />
                                                 <div className={`w-5 h-5 rounded border flex items-center justify-center mr-3 transition-colors flex-shrink-0
@@ -475,7 +475,7 @@ export default function CandidateForm() {
                                                         <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7" /></svg>
                                                     )}
                                                 </div>
-                                                <span className="text-sm font-medium">{opt}</span>
+                                                <span className="text-sm font-medium">{t(`options.offers.${opt.key}`)}</span>
                                             </label>
                                         );
                                     })}

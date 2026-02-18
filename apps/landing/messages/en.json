@@ -50,6 +50,20 @@
                 "portuguese": "Portuguese",
                 "french": "French",
                 "german": "German"
+            },
+            "offers": {
+                "welder_mig_mag": "MIG/MAG Welder (GMAW/FCAW)",
+                "welder_tig": "TIG Welder (GTAW)",
+                "welder_smaw": "SMAW / Stick Welder",
+                "pipefitter": "Pipefitter",
+                "electrician": "Electrician",
+                "boilermaker": "Boilermaker",
+                "mechanic_fitter": "Millwright / Mechanical Fitter",
+                "structural_assembler": "Structural Assembler",
+                "painter": "Industrial Painter",
+                "cnc_operator": "CNC Operator / Turner",
+                "insulator": "Thermal Insulator",
+                "other": "Other"
             }
         }
     },

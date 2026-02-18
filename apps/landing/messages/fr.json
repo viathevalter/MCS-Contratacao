@@ -50,6 +50,20 @@
                 "portuguese": "Portugais",
                 "french": "Français",
                 "german": "Allemand"
+            },
+            "offers": {
+                "welder_mig_mag": "Soudeur MIG-MAG (GMAW/FCAW)",
+                "welder_tig": "Soudeur TIG (GTAW)",
+                "welder_smaw": "Soudeur Électrode Enrobée (SMAW)",
+                "pipefitter": "Tuyauteur",
+                "electrician": "Électricien",
+                "boilermaker": "Chaudronnier",
+                "mechanic_fitter": "Mécanicien Monteur",
+                "structural_assembler": "Monteur de Structures",
+                "painter": "Peintre Industriel",
+                "cnc_operator": "Opérateur CNC / Tourneur",
+                "insulator": "Calorifugeur",
+                "other": "Autre"
             }
         }
     },
