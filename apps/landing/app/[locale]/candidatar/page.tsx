@@ -13,11 +13,12 @@ import { Card } from '../../../components/ui/Card';
 // Constants for form options
 // Mapping for options to support translation while keeping DB values consistent
 const DOCUMENTATION_MAP = [
-    { value: "Pasaporte de la UE (Europeo)", key: "passport_ue" },
-    { value: "Permiso de trabajo válido", key: "work_permit" },
-    { value: "Visa de estudiante", key: "student_visa" },
-    { value: "En trámite / Sin documentos", key: "processing" },
-    { value: "Otro", key: "other" }
+    { value: "Cidadão da UE (Cartão Cidadão / Passaporte)", key: "eu_citizen" },
+    { value: "Título de Residência Válido em Portugal", key: "valid_residence_pt" },
+    { value: "Visto CPLP / Manifestação de Interesse", key: "cplp_visa" },
+    { value: "Permissão de Trabalho no País de Destino", key: "work_permit_destination" },
+    { value: "En trámite / Sin documentos", key: "processing_no_docs" },
+    { value: "Outro", key: "other" }
 ];
 
 const OFFER_MAP = [

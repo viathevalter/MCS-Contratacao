@@ -1,7 +1,67 @@
 {
     "Index": {
         "title": "PERSONNE NE VOUS CONNECTE AU TALENT INDUSTRIEL COMME NOUS",
-        "subtitle": "Chez Wolter’s Contratação, nous sommes spécialisés dans le recrutement et la fourniture de main-d'œuvre qualifiée, connectant les entreprises avec des professionnels formés pour des projets industriels."
+        "subtitle": "Chez Wolter’s Contratação, nous sommes spécialisés dans le recrutement et la fourniture de main-d'œuvre qualifiée, connectant les entreprises avec des professionnels formés pour des projets industriels.",
+        "hero": {
+            "cta_opportunities": "Trouver des Opportunités",
+            "cta_learn_more": "En Savoir Plus"
+        },
+        "about": {
+            "tag": "À Propos",
+            "title": "QUI SOMMES-NOUS ?",
+            "p1": "<span class=\"font-semibold text-blue-700\">Wolter’s Contratação</span> est une entreprise spécialisée dans le recrutement et la fourniture de main-d'œuvre qualifiée, offrant des solutions efficaces et fiables pour différents secteurs.",
+            "p2": "Notre objectif est de connecter les entreprises à des professionnels qualifiés, garantissant qualité, engagement et conformité dans chaque projet. Notre but est de soutenir la croissance de nos clients grâce à un service agile, responsable et adapté à leurs besoins."
+        },
+        "services": {
+            "title": "Secteurs d'Activité",
+            "subtitle": "Nous recrutons des spécialistes pour les secteurs industriels les plus exigeants.",
+            "items": {
+                "welding": {
+                    "title": "Soudage",
+                    "desc": "TIG, MIG/MAG, Électrode, Orbital et Arc Submergé – SAW"
+                },
+                "boilermaking": {
+                    "title": "Chaudronnerie",
+                    "desc": "Tuyauterie industrielle et structures complexes"
+                },
+                "fabrication": {
+                    "title": "Fabrication et Montage",
+                    "desc": "Structures métalliques de grande taille"
+                },
+                "mechanics": {
+                    "title": "Mécanique Industrielle",
+                    "desc": "Maintenance et montage d'équipements"
+                },
+                "painting": {
+                    "title": "Peinture et Polissage",
+                    "desc": "Finition industrielle et protection de surfaces"
+                }
+            }
+        },
+        "international": {
+            "title": "Portée Internationale",
+            "description": "Chez Wolter’s Contratação, nous opérons au niveau international, offrant recrutement et fourniture de main-d'œuvre qualifiée pour des projets industriels en :",
+            "countries": {
+                "spain": "Espagne",
+                "belgium": "Belgique",
+                "italy": "Italie"
+            }
+        }
+    },
+    "Header": {
+        "menu": {
+            "about": "À Propos",
+            "services": "Services",
+            "international": "International",
+            "apply": "Postuler"
+        }
+    },
+    "Footer": {
+        "description": "Votre partenaire stratégique en recrutement industriel. Nous connectons talent et opportunité dans toute l'Europe.",
+        "contact": {
+            "title": "Contact"
+        },
+        "rights": "Tous droits réservés."
     },
     "CandidateForm": {
         "title": "Offres d'Emploi",
@@ -38,10 +98,11 @@
         "submissionError": "Une erreur s'est produite lors de l'enregistrement de votre candidature. Veuillez réessayer.",
         "options": {
             "docs": {
-                "passport_ue": "Passeport UE (Européen)",
-                "work_permit": "Permis de travail valide",
-                "student_visa": "Visa étudiant",
-                "processing": "En cours / Sans documents",
+                "eu_citizen": "Citoyen de l'UE (Carte d'identité / Passeport)",
+                "valid_residence_pt": "Titre de Séjour Valide au Portugal",
+                "cplp_visa": "Visa CPLP / Manifestation d'Intérêt",
+                "work_permit_destination": "Permis de Travail dans le Pays de Destination",
+                "processing_no_docs": "En cours / Sans documents",
                 "other": "Autre"
             },
             "languages": {

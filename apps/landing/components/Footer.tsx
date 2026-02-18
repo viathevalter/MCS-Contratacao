@@ -1,6 +1,9 @@
 import { Link } from "../navigation";
 
+import { useTranslations } from 'next-intl';
+
 export function Footer() {
+    const t = useTranslations('Footer');
     const currentYear = new Date().getFullYear();
     const adminUrl = process.env.NEXT_PUBLIC_ADMIN_URL || "https://mcs-contratacao.vercel.app";
 
@@ -14,12 +17,12 @@ export function Footer() {
                             <span className="text-2xl font-bold text-white leading-none">Wolter's Contratação</span>
                         </div>
                         <p className="max-w-md text-slate-400 leading-relaxed">
-                            Sua parceira estratégica em recrutamento industrial. Conectamos talento e oportunidade em toda a Europa.
+                            {t('description')}
                         </p>
                     </div>
 
                     <div>
-                        <h3 className="text-white font-semibold mb-6 text-lg">Contato</h3>
+                        <h3 className="text-white font-semibold mb-6 text-lg">{t('contact.title')}</h3>
                         <ul className="space-y-4">
                             <li className="flex items-start gap-3">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 text-[#004F9F] mt-0.5 flex-shrink-0">
@@ -45,7 +48,7 @@ export function Footer() {
 
                 </div>
                 <div className="mt-16 border-t border-slate-800 pt-8 text-center text-sm text-slate-500">
-                    &copy; {currentYear} Wolter's Contratação. Todos os direitos reservados.
+                    &copy; {currentYear} Wolter's Contratação. {t('rights')}
                 </div>
             </div>
         </footer>

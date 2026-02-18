@@ -4,7 +4,10 @@ import React, { useState } from 'react';
 import { Link } from '../navigation';
 import LanguageSelector from './LanguageSelector';
 
+import { useTranslations } from 'next-intl';
+
 export function Header() {
+    const t = useTranslations('Header');
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
     const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
@@ -21,15 +24,15 @@ export function Header() {
 
                 {/* Desktop Nav */}
                 <nav className="hidden items-center gap-8 text-sm font-medium text-slate-600 md:flex">
-                    <Link href="/#quem-somos" className="hover:text-[#004F9F] transition-colors">Quem Somos</Link>
-                    <Link href="/#servicos" className="hover:text-[#004F9F] transition-colors">Serviços</Link>
-                    <Link href="/#internacional" className="hover:text-[#004F9F] transition-colors">Internacional</Link>
+                    <Link href="/#quem-somos" className="hover:text-[#004F9F] transition-colors">{t('menu.about')}</Link>
+                    <Link href="/#servicos" className="hover:text-[#004F9F] transition-colors">{t('menu.services')}</Link>
+                    <Link href="/#internacional" className="hover:text-[#004F9F] transition-colors">{t('menu.international')}</Link>
                     <LanguageSelector />
                     <Link
                         href="/candidatar"
                         className="rounded-full bg-[#FF6B00] px-6 py-2.5 font-bold text-white shadow-sm transition-all hover:bg-[#e66000] hover:shadow-md"
                     >
-                        Candidatar-se
+                        {t('menu.apply')}
                     </Link>
                 </nav>
 
@@ -56,15 +59,15 @@ export function Header() {
             {isMenuOpen && (
                 <div className="md:hidden border-t border-slate-100 bg-white px-6 py-4 shadow-lg animate-in slide-in-from-top-2">
                     <nav className="flex flex-col gap-4 text-base font-medium text-slate-600">
-                        <Link href="/#quem-somos" onClick={() => setIsMenuOpen(false)} className="hover:text-[#004F9F] py-2 border-b border-slate-50">Quem Somos</Link>
-                        <Link href="/#servicos" onClick={() => setIsMenuOpen(false)} className="hover:text-[#004F9F] py-2 border-b border-slate-50">Serviços</Link>
-                        <Link href="/#internacional" onClick={() => setIsMenuOpen(false)} className="hover:text-[#004F9F] py-2 border-b border-slate-50">Internacional</Link>
+                        <Link href="/#quem-somos" onClick={() => setIsMenuOpen(false)} className="hover:text-[#004F9F] py-2 border-b border-slate-50">{t('menu.about')}</Link>
+                        <Link href="/#servicos" onClick={() => setIsMenuOpen(false)} className="hover:text-[#004F9F] py-2 border-b border-slate-50">{t('menu.services')}</Link>
+                        <Link href="/#internacional" onClick={() => setIsMenuOpen(false)} className="hover:text-[#004F9F] py-2 border-b border-slate-50">{t('menu.international')}</Link>
                         <Link
                             href="/candidatar"
                             onClick={() => setIsMenuOpen(false)}
                             className="mt-2 text-center rounded-xl bg-[#FF6B00] px-6 py-3 font-bold text-white shadow-sm hover:bg-[#e66000]"
                         >
-                            Candidatar-se
+                            {t('menu.apply')}
                         </Link>
                     </nav>
                 </div>

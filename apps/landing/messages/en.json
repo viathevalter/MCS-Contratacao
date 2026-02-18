@@ -1,7 +1,67 @@
 {
     "Index": {
         "title": "NO ONE CONNECTS YOU WITH INDUSTRIAL TALENT LIKE WE DO",
-        "subtitle": "At Wolter's Contratação, we specialize in recruiting and supplying skilled labor, connecting companies with trained professionals for industrial projects."
+        "subtitle": "At Wolter's Contratação, we specialize in recruiting and supplying skilled labor, connecting companies with trained professionals for industrial projects.",
+        "hero": {
+            "cta_opportunities": "Find Opportunities",
+            "cta_learn_more": "Learn More"
+        },
+        "about": {
+            "tag": "About Us",
+            "title": "WHO WE ARE",
+            "p1": "<span class=\"font-semibold text-blue-700\">Wolter’s Contratação</span> is a company specialized in recruiting and supplying skilled labor, offering efficient and reliable solutions for different sectors.",
+            "p2": "Our focus is connecting companies with trained professionals, ensuring quality, commitment, and compliance in every project. Our goal is to support our clients' growth through agile, responsible service adapted to their needs."
+        },
+        "services": {
+            "title": "Sectors of Activity",
+            "subtitle": "We recruit specialists for the most demanding industry sectors.",
+            "items": {
+                "welding": {
+                    "title": "Welding",
+                    "desc": "TIG, MIG/MAG, Electrode, Orbital and Submerged Arc – SAW"
+                },
+                "boilermaking": {
+                    "title": "Boilermaking",
+                    "desc": "Industrial piping and complex structures"
+                },
+                "fabrication": {
+                    "title": "Fabrication and Assembly",
+                    "desc": "Large-scale metal structures"
+                },
+                "mechanics": {
+                    "title": "Industrial Mechanics",
+                    "desc": "Equipment maintenance and assembly"
+                },
+                "painting": {
+                    "title": "Painting and Polishing",
+                    "desc": "Industrial finishing and surface protection"
+                }
+            }
+        },
+        "international": {
+            "title": "International Reach",
+            "description": "At Wolter’s Contratação, we operate internationally, offering recruitment and supply of skilled labor for industrial projects in:",
+            "countries": {
+                "spain": "Spain",
+                "belgium": "Belgium",
+                "italy": "Italy"
+            }
+        }
+    },
+    "Header": {
+        "menu": {
+            "about": "About Us",
+            "services": "Services",
+            "international": "International",
+            "apply": "Apply Now"
+        }
+    },
+    "Footer": {
+        "description": "Your strategic partner in industrial recruitment. Connecting talent and opportunity across Europe.",
+        "contact": {
+            "title": "Contact"
+        },
+        "rights": "All rights reserved."
     },
     "CandidateForm": {
         "title": "Job Offers",
@@ -38,10 +98,11 @@
         "submissionError": "There was an error saving your application. Please try again.",
         "options": {
             "docs": {
-                "passport_ue": "EU Passport (European)",
-                "work_permit": "Valid Work Permit",
-                "student_visa": "Student Visa",
-                "processing": "In Process / No Documents",
+                "eu_citizen": "EU Citizen (ID Card / Passport)",
+                "valid_residence_pt": "Valid Residence Permit in Portugal",
+                "cplp_visa": "CPLP Visa / Expression of Interest",
+                "work_permit_destination": "Work Permit in Destination Country",
+                "processing_no_docs": "Processing / No documents",
                 "other": "Other"
             },
             "languages": {

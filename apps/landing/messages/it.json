@@ -1,7 +1,67 @@
 {
     "Index": {
         "title": "NESSUNO TI CONNETTE CON IL TALENTO INDUSTRIALE COME NOI",
-        "subtitle": "In Wolter’s Contratação, siamo specializzati nel reclutamento e nella fornitura di manodopera qualificata, collegando le aziende con professionisti formati per progetti industriali."
+        "subtitle": "In Wolter’s Contratação, siamo specializzati nel reclutamento e nella fornitura di manodopera qualificata, collegando le aziende con professionisti formati per progetti industriali.",
+        "hero": {
+            "cta_opportunities": "Trova Opportunità",
+            "cta_learn_more": "Saperne di Più"
+        },
+        "about": {
+            "tag": "Chi Siamo",
+            "title": "CHI SIAMO?",
+            "p1": "<span class=\"font-semibold text-blue-700\">Wolter’s Contratação</span> è un'azienda specializzata nel reclutamento e fornitura di manodopera qualificata, offrendo soluzioni efficienti e affidabili per diversi settori.",
+            "p2": "Il nostro focus è connettere le aziende con professionisti qualificati, garantendo qualità, impegno e conformità in ogni progetto. Il nostro obiettivo è supportare la crescita dei nostri clienti attraverso un servizio agile, responsabile e adattato alle loro esigenze."
+        },
+        "services": {
+            "title": "Settori di Attività",
+            "subtitle": "Reclutiamo specialisti per i settori industriali più esigenti.",
+            "items": {
+                "welding": {
+                    "title": "Saldatura",
+                    "desc": "TIG, MIG/MAG, Elettrodo, Orbitale e Arco Sommerso – SAW"
+                },
+                "boilermaking": {
+                    "title": "Carpenteria Metallica",
+                    "desc": "Tubazioni industriali e strutture complesse"
+                },
+                "fabrication": {
+                    "title": "Fabbricazione e Montaggio",
+                    "desc": "Strutture metalliche di grandi dimensioni"
+                },
+                "mechanics": {
+                    "title": "Meccanica Industriale",
+                    "desc": "Manutenzione e montaggio di attrezzature"
+                },
+                "painting": {
+                    "title": "Verniciatura e Lucidatura",
+                    "desc": "Finitura industriale e protezione delle superfici"
+                }
+            }
+        },
+        "international": {
+            "title": "Portata Internazionale",
+            "description": "In Wolter’s Contratação, operiamo a livello internazionale, offrendo reclutamento e fornitura di manodopera qualificata per progetti industriali in:",
+            "countries": {
+                "spain": "Spagna",
+                "belgium": "Belgio",
+                "italy": "Italia"
+            }
+        }
+    },
+    "Header": {
+        "menu": {
+            "about": "Chi Siamo",
+            "services": "Servizi",
+            "international": "Internazionale",
+            "apply": "Candidati"
+        }
+    },
+    "Footer": {
+        "description": "Il tuo partner strategico nel reclutamento industriale. Connettiamo talento e opportunità in tutta Europa.",
+        "contact": {
+            "title": "Contatto"
+        },
+        "rights": "Tutti i diritti riservati."
     },
     "CandidateForm": {
         "title": "Offerte di Lavoro",
@@ -38,10 +98,11 @@
         "submissionError": "Si è verificato un errore durante il salvataggio della tua candidatura. Riprova.",
         "options": {
             "docs": {
-                "passport_ue": "Passaporto UE (Europeo)",
-                "work_permit": "Permesso di lavoro valido",
-                "student_visa": "Visto studentesco",
-                "processing": "In elaborazione / Senza documenti",
+                "eu_citizen": "Cittadino UE (Carta d'Identità / Passaporto)",
+                "valid_residence_pt": "Permesso di Soggiorno Valido in Portogallo",
+                "cplp_visa": "Visto CPLP / Manifestazione di Interesse",
+                "work_permit_destination": "Permesso di Lavoro nel Paese di Destinazione",
+                "processing_no_docs": "In fase di elaborazione / Nessun documento",
                 "other": "Altro"
             },
             "languages": {

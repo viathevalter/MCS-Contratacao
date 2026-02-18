@@ -1,7 +1,67 @@
 {
     "Index": {
         "title": "NINGUÉM TE CONECTA COM TALENTO INDUSTRIAL COMO NÓS",
-        "subtitle": "Na Wolter’s Contratação, somos especializados no recrutamento e fornecimento de mão de obra qualificada, conectando empresas com profissionais capacitados para projetos industriais."
+        "subtitle": "Na Wolter’s Contratação, somos especializados no recrutamento e fornecimento de mão de obra qualificada, conectando empresas com profissionais capacitados para projetos industriais.",
+        "hero": {
+            "cta_opportunities": "Encontrar Oportunidades",
+            "cta_learn_more": "Saiba Mais"
+        },
+        "about": {
+            "tag": "Sobre Nós",
+            "title": "QUEM SOMOS?",
+            "p1": "A <span class=\"font-semibold text-blue-700\">Wolter’s Contratação</span> é uma empresa especializada na contratação e fornecimento de mão de obra qualificada, oferecendo soluções eficientes e confiáveis para diferentes setores.",
+            "p2": "Nosso foco é conectar empresas a profissionais capacitados, garantindo qualidade, compromisso e cumprimento em cada projeto. Nosso objetivo é apoiar o crescimento de nossos clientes por meio de um serviço ágil, responsável e adaptado às suas necessidades."
+        },
+        "services": {
+            "title": "Setores de Atuação",
+            "subtitle": "Recrutamos especialistas para os setores mais exigentes da indústria.",
+            "items": {
+                "welding": {
+                    "title": "Soldagem",
+                    "desc": "TIG, MIG/MAG, Eletrodo, Orbital e Arco Submerso – SAW"
+                },
+                "boilermaking": {
+                    "title": "Caldeiraria",
+                    "desc": "Tubulações industriais e estruturas complexas"
+                },
+                "fabrication": {
+                    "title": "Fabricação e Montagem",
+                    "desc": "Estruturas metálicas de grande porte"
+                },
+                "mechanics": {
+                    "title": "Mecânica Industrial",
+                    "desc": "Manutenção e montagem de equipamentos"
+                },
+                "painting": {
+                    "title": "Pintura e Polimento",
+                    "desc": "Acabamento industrial e proteção de superfícies"
+                }
+            }
+        },
+        "international": {
+            "title": "Alcance Internacional",
+            "description": "Na Wolter’s Contratação, operamos a nível internacional, oferecendo recrutamento e fornecimento de mão de obra qualificada para projetos industriais em:",
+            "countries": {
+                "spain": "Espanha",
+                "belgium": "Bélgica",
+                "italy": "Itália"
+            }
+        }
+    },
+    "Header": {
+        "menu": {
+            "about": "Quem Somos",
+            "services": "Serviços",
+            "international": "Internacional",
+            "apply": "Candidatar-se"
+        }
+    },
+    "Footer": {
+        "description": "Sua parceira estratégica em recrutamento industrial. Conectamos talento e oportunidade em toda a Europa.",
+        "contact": {
+            "title": "Contato"
+        },
+        "rights": "Todos os direitos reservados."
     },
     "CandidateForm": {
         "title": "Ofertas de Emprego",
@@ -38,10 +98,11 @@
         "submissionError": "Houve um erro ao salvar sua solicitação. Tente novamente.",
         "options": {
             "docs": {
-                "passport_ue": "Passaporte da UE (Europeu)",
-                "work_permit": "Permissão de trabalho válida",
-                "student_visa": "Visto de estudante",
-                "processing": "Em trâmite / Sem documentos",
+                "eu_citizen": "Cidadão da UE (Cartão Cidadão / Passaporte)",
+                "valid_residence_pt": "Título de Residência Válido em Portugal",
+                "cplp_visa": "Visto CPLP / Manifestação de Interesse",
+                "work_permit_destination": "Permissão de Trabalho no País de Destino",
+                "processing_no_docs": "Em processo / Sem documentos",
                 "other": "Outro"
             },
             "languages": {
