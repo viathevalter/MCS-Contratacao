@@ -56,8 +56,8 @@ interface FormState {
     languages: Set<string>;
     languageOther: string;
     observations: string;
-    fileMeta: FileMetadata | null;
-    attachedFile: File | null;
+    fileMetas: FileMetadata[];
+    attachedFiles: File[];
 }
 
 const INITIAL_STATE: FormState = {
@@ -72,8 +72,8 @@ const INITIAL_STATE: FormState = {
     languages: new Set(),
     languageOther: '',
     observations: '',
-    fileMeta: null,
-    attachedFile: null
+    fileMetas: [],
+    attachedFiles: []
 };
 
 import { useTranslations } from 'next-intl';
@@ -116,15 +116,15 @@ export default function CandidateForm() {
 
     const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
         if (e.target.files && e.target.files.length > 0) {
-            const file = e.target.files[0];
+            const newFiles = Array.from(e.target.files);
             setFormData(prev => ({
                 ...prev,
-                fileMeta: {
-                    name: file.name,
-                    size: file.size,
-                    type: file.type
-                },
-                attachedFile: file
+                fileMetas: [...prev.fileMetas, ...newFiles.map(f => ({
+                    name: f.name,
+                    size: f.size,
+                    type: f.type
+                }))],
+                attachedFiles: [...prev.attachedFiles, ...newFiles]
             }));
         }
     };
@@ -159,11 +159,16 @@ export default function CandidateForm() {
         }
 
         try {
-            let uploadedPath = undefined;
-            if (formData.attachedFile) {
-                const path = await stagingRepo.uploadFile(formData.attachedFile);
+            const uploadedPaths: string[] = [];
+            const uploadedMetas: FileMetadata[] = [];
+            
+            for (let i = 0; i < formData.attachedFiles.length; i++) {
+                const file = formData.attachedFiles[i];
+                const meta = formData.fileMetas[i];
+                const path = await stagingRepo.uploadFile(file);
                 if (path) {
-                    uploadedPath = path;
+                    uploadedPaths.push(path);
+                    uploadedMetas.push({ ...meta, path });
                 }
             }
 
@@ -177,10 +182,8 @@ export default function CandidateForm() {
                     languages: finalLangs,
                     offer: finalOffersString, // Saving as comma-separated string
                     observations: formData.observations || undefined,
-                    file_meta: formData.fileMeta ? {
-                        ...formData.fileMeta,
-                        path: uploadedPath
-                    } : undefined
+                    file_metas: uploadedMetas.length > 0 ? uploadedMetas : undefined,
+                    file_meta: uploadedMetas.length > 0 ? uploadedMetas[0] : undefined // fallback for legacy code
                 }
             );
 
@@ -496,11 +499,11 @@ export default function CandidateForm() {
 
                             <div className="border-t border-slate-100 pt-6">
                                 <label className="block text-sm font-semibold text-slate-700 mb-2">{t('fileLabel')}</label>
-                                <div className={`mt-2 flex justify-center px-6 pt-5 pb-6 border-2 border-dashed rounded-xl transition-colors
-                    ${formData.fileMeta ? 'border-blue-300 bg-blue-50' : 'border-slate-300 hover:border-blue-300 hover:bg-slate-50'}
+                                    <div className={`mt-2 flex justify-center px-6 pt-5 pb-6 border-2 border-dashed rounded-xl transition-colors
+                    ${formData.fileMetas.length > 0 ? 'border-blue-300 bg-blue-50' : 'border-slate-300 hover:border-blue-300 hover:bg-slate-50'}
                     `}>
-                                    <div className="space-y-1 text-center">
-                                        {!formData.fileMeta ? (
+                                    <div className="space-y-1 text-center w-full">
+                                        {formData.fileMetas.length === 0 ? (
                                             <>
                                                 <svg className="mx-auto h-12 w-12 text-slate-400" stroke="currentColor" fill="none" viewBox="0 0 48 48" aria-hidden="true">
                                                     <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
@@ -508,20 +511,27 @@ export default function CandidateForm() {
                                                 <div className="flex text-sm text-slate-600 justify-center">
                                                     <label htmlFor="file-upload" className="relative cursor-pointer bg-white rounded-md font-medium text-[#004F9F] hover:text-[#003366] focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-blue-500">
                                                         <span>{t('uploadButton')}</span>
-                                                        <input id="file-upload" name="file-upload" type="file" className="sr-only" onChange={handleFileChange} />
+                                                        <input id="file-upload" name="file-upload" type="file" multiple className="sr-only" onChange={handleFileChange} />
                                                     </label>
                                                     <p className="pl-1">{t('dragDrop')}</p>
                                                 </div>
-                                                <p className="text-xs text-slate-500">PDF, DOCX, JPG hasta 5MB</p>
+                                                <p className="text-xs text-slate-500">PDF, DOCX, JPG hasta 20MB</p>
                                             </>
                                         ) : (
-                                            <div className="flex flex-col items-center">
+                                            <div className="flex flex-col items-center w-full">
                                                 <svg className="w-10 h-10 text-green-500 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                                                <span className="text-sm font-medium text-slate-900">{formData.fileMeta.name}</span>
-                                                <span className="text-xs text-slate-500">{(formData.fileMeta.size / 1024).toFixed(0)} KB</span>
-                                                <label htmlFor="file-upload" className="mt-2 text-xs font-semibold text-[#004F9F] hover:text-[#003366] cursor-pointer">
-                                                    {t('changeFile')}
-                                                    <input id="file-upload" name="file-upload" type="file" className="sr-only" onChange={handleFileChange} />
+                                                <span className="text-sm font-medium text-slate-900">{formData.fileMetas.length} {formData.fileMetas.length === 1 ? 'archivo seleccionado' : 'archivos seleccionados'}</span>
+                                                <div className="mt-2 text-xs text-slate-500 max-h-32 overflow-y-auto w-full text-left bg-white p-2 rounded border border-slate-100">
+                                                    {formData.fileMetas.map((meta, idx) => (
+                                                        <div key={idx} className="flex justify-between border-b border-slate-50 py-1.5 last:border-0">
+                                                            <span className="truncate pr-2">{meta.name}</span>
+                                                            <span className="whitespace-nowrap">{(meta.size / 1024).toFixed(0)} KB</span>
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                                <label htmlFor="file-upload-add" className="mt-4 text-xs font-semibold text-[#004F9F] hover:text-[#003366] cursor-pointer bg-blue-50 px-3 py-1.5 rounded-full border border-blue-100 transition-colors hover:bg-blue-100 inline-block">
+                                                    + Añadir más archivos
+                                                    <input id="file-upload-add" name="file-upload-add" type="file" multiple className="sr-only" onChange={handleFileChange} />
                                                 </label>
                                             </div>
                                         )}

@@ -40,6 +40,8 @@ export const stagingRepo = {
 
     if (filters.limit) {
       query = query.limit(filters.limit);
+    } else {
+      query = query.limit(10000);
     }
 
     const { data, error } = await query;

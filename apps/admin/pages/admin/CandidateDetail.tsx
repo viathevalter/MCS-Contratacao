@@ -461,29 +461,33 @@ const CandidateDetail: React.FC = () => {
                 </dd>
               </div>
 
-              {submission.raw_payload.file_meta && (
+              {(submission.raw_payload.file_metas || (submission.raw_payload.file_meta ? [submission.raw_payload.file_meta] : [])).length > 0 && (
                 <div className="sm:col-span-2">
-                  <dt className="text-sm font-medium text-slate-500">Adjunto</dt>
-                  <dd className="mt-1 text-sm text-slate-900 flex items-center p-2 border rounded bg-slate-50">
-                    <svg className="w-5 h-5 mr-2 text-slate-400" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M8 4a3 3 0 00-3 3v4a5 5 0 0010 0V7a1 1 0 112 0v4a7 7 0 11-14 0V7a5 5 0 0110 0v4a3 3 0 11-6 0V7a1 1 0 012 0v4a1 1 0 102 0V7a3 3 0 00-3-3z" clipRule="evenodd" />
-                    </svg>
-                    {submission.raw_payload.file_meta.name}
-                    <span className="ml-2 text-slate-400 text-xs">({(submission.raw_payload.file_meta.size / 1024).toFixed(1)} KB)</span>
-                    {submission.raw_payload.file_meta.path && (
-                      <a
-                        href={stagingRepo.getFileUrl(submission.raw_payload.file_meta.path)}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="ml-auto text-brand-600 hover:text-brand-800 text-xs font-bold flex items-center bg-white px-2 py-1 rounded border border-brand-200 shadow-sm"
-                        title="Descargar Archivo"
-                      >
-                        <svg className="w-4 h-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                  <dt className="text-sm font-medium text-slate-500">Adjuntos</dt>
+                  <dd className="mt-2 space-y-2">
+                    {(submission.raw_payload.file_metas || (submission.raw_payload.file_meta ? [submission.raw_payload.file_meta] : [])).map((meta, idx) => (
+                      <div key={idx} className="text-sm text-slate-900 flex items-center p-2 border rounded bg-slate-50">
+                        <svg className="w-5 h-5 mr-2 text-slate-400" fill="currentColor" viewBox="0 0 20 20">
+                          <path fillRule="evenodd" d="M8 4a3 3 0 00-3 3v4a5 5 0 0010 0V7a1 1 0 112 0v4a7 7 0 11-14 0V7a5 5 0 0110 0v4a3 3 0 11-6 0V7a1 1 0 012 0v4a1 1 0 102 0V7a3 3 0 00-3-3z" clipRule="evenodd" />
                         </svg>
-                        DESCARGAR
-                      </a>
-                    )}
+                        {meta.name}
+                        <span className="ml-2 text-slate-400 text-xs">({(meta.size / 1024).toFixed(1)} KB)</span>
+                        {meta.path && (
+                          <a
+                            href={stagingRepo.getFileUrl(meta.path)}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="ml-auto text-brand-600 hover:text-brand-800 text-xs font-bold flex items-center bg-white px-2 py-1 rounded border border-brand-200 shadow-sm"
+                            title="Descargar Archivo"
+                          >
+                            <svg className="w-4 h-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                            </svg>
+                            DESCARGAR
+                          </a>
+                        )}
+                      </div>
+                    ))}
                   </dd>
                 </div>
               )}

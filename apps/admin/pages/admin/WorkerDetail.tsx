@@ -388,10 +388,27 @@ const WorkerDetail: React.FC = () => {
                             </div>
                             <div className="bg-slate-50 p-4 rounded border border-slate-200 text-sm">
                                 <p className="mb-2"><span className="font-semibold">Fecha postulación:</span> {new Date(linkedSubmission.created_at).toLocaleDateString()}</p>
-                                {linkedSubmission.raw_payload.file_meta && (
-                                    <div className="flex items-center text-slate-600 bg-white p-2 rounded border border-slate-200 w-fit">
-                                        <svg className="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13" /></svg>
-                                        {linkedSubmission.raw_payload.file_meta.name}
+                                {(linkedSubmission.raw_payload.file_metas || (linkedSubmission.raw_payload.file_meta ? [linkedSubmission.raw_payload.file_meta] : [])).length > 0 && (
+                                    <div className="space-y-2 mt-2">
+                                        {(linkedSubmission.raw_payload.file_metas || (linkedSubmission.raw_payload.file_meta ? [linkedSubmission.raw_payload.file_meta] : [])).map((meta, idx) => (
+                                            <div key={idx} className="flex items-center justify-between text-slate-600 bg-white p-2 rounded border border-slate-200">
+                                                <div className="flex items-center">
+                                                    <svg className="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13" /></svg>
+                                                    {meta.name}
+                                                </div>
+                                                {meta.path && (
+                                                    <a
+                                                        href={stagingRepo.getFileUrl(meta.path)}
+                                                        target="_blank"
+                                                        rel="noopener noreferrer"
+                                                        className="text-brand-600 hover:text-brand-800 text-xs font-bold"
+                                                        title="Descargar Archivo"
+                                                    >
+                                                        DESCARGAR
+                                                    </a>
+                                                )}
+                                            </div>
+                                        ))}
                                     </div>
                                 )}
                             </div>

@@ -13,6 +13,7 @@ export interface CandidatePayload {
   offer: string;
   observations?: string;
   file_meta?: FileMetadata;
+  file_metas?: FileMetadata[];
   nationality?: string;
   has_driver_license?: boolean;
   european_residence?: string;
