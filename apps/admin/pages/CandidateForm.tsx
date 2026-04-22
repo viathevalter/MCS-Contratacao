@@ -51,7 +51,8 @@ interface FormState {
   languages: Set<string>;
   languageOther: string;
   observations: string;
-  fileMeta: FileMetadata | null;
+  fileMetas: FileMetadata[];
+  attachedFiles: File[];
 }
 
 const INITIAL_STATE: FormState = {
@@ -66,7 +67,8 @@ const INITIAL_STATE: FormState = {
   languages: new Set(),
   languageOther: '',
   observations: '',
-  fileMeta: null
+  fileMetas: [],
+  attachedFiles: []
 };
 
 export default function CandidateForm() {
@@ -106,16 +108,43 @@ export default function CandidateForm() {
 
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
-      const file = e.target.files[0];
-      setFormData(prev => ({
-        ...prev,
-        fileMeta: {
-          name: file.name,
-          size: file.size,
-          type: file.type
+      const newFiles = Array.from(e.target.files);
+      const MAX_SIZE = 20 * 1024 * 1024; // 20MB
+      
+      const validFiles = newFiles.filter(file => {
+        if (file.size > MAX_SIZE) {
+          setError(`El archivo ${file.name} excede el límite de 20MB`);
+          return false;
         }
-      }));
+        return true;
+      });
+
+      if (validFiles.length > 0) {
+        setFormData(prev => ({
+          ...prev,
+          attachedFiles: [...prev.attachedFiles, ...validFiles],
+          fileMetas: [
+            ...prev.fileMetas,
+            ...validFiles.map(f => ({ name: f.name, size: f.size, type: f.type }))
+          ]
+        }));
+        setError(null);
+      }
     }
+  };
+
+  const removeFile = (index: number) => {
+    setFormData(prev => {
+      const newFiles = [...prev.attachedFiles];
+      const newMetas = [...prev.fileMetas];
+      newFiles.splice(index, 1);
+      newMetas.splice(index, 1);
+      return {
+        ...prev,
+        attachedFiles: newFiles,
+        fileMetas: newMetas
+      };
+    });
   };
 
   const handleSubmit = async (e: FormEvent) => {
@@ -148,6 +177,19 @@ export default function CandidateForm() {
     }
 
     try {
+      // Upload files first if any
+      const finalFileMetas: FileMetadata[] = [];
+      for (let i = 0; i < formData.attachedFiles.length; i++) {
+        const file = formData.attachedFiles[i];
+        const uploadedPath = await stagingRepo.uploadFile(file);
+        finalFileMetas.push({
+          name: file.name,
+          size: file.size,
+          type: file.type,
+          path: uploadedPath || undefined
+        });
+      }
+
       const submission = await stagingRepo.createSubmission(
         formData.name,
         formData.phone,
@@ -158,7 +200,8 @@ export default function CandidateForm() {
           languages: finalLangs,
           offer: finalOffersString, // Saving as comma-separated string
           observations: formData.observations || undefined,
-          file_meta: formData.fileMeta || undefined
+          file_meta: finalFileMetas.length > 0 ? finalFileMetas[0] : undefined,
+          file_metas: finalFileMetas.length > 0 ? finalFileMetas : undefined
         }
       );
 
@@ -473,35 +516,41 @@ export default function CandidateForm() {
 
                 <div className="border-t border-slate-100 pt-6">
                   <label className="block text-sm font-semibold text-slate-700 mb-2">Adjuntar hoja de vida y certificaciones</label>
-                  <div className={`mt-2 flex justify-center px-6 pt-5 pb-6 border-2 border-dashed rounded-xl transition-colors
-                    ${formData.fileMeta ? 'border-blue-300 bg-blue-50' : 'border-slate-300 hover:border-blue-300 hover:bg-slate-50'}
+                  <div className={`mt-2 flex flex-col justify-center px-6 pt-5 pb-6 border-2 border-dashed rounded-xl transition-colors
+                    ${formData.attachedFiles.length > 0 ? 'border-blue-300 bg-blue-50' : 'border-slate-300 hover:border-blue-300 hover:bg-slate-50'}
                     `}>
-                    <div className="space-y-1 text-center">
-                      {!formData.fileMeta ? (
-                        <>
-                          <svg className="mx-auto h-12 w-12 text-slate-400" stroke="currentColor" fill="none" viewBox="0 0 48 48" aria-hidden="true">
-                            <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                          </svg>
-                          <div className="flex text-sm text-slate-600 justify-center">
-                            <label htmlFor="file-upload" className="relative cursor-pointer bg-white rounded-md font-medium text-[#004F9F] hover:text-[#003366] focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-blue-500">
-                              <span>Subir un archivo</span>
-                              <input id="file-upload" name="file-upload" type="file" className="sr-only" onChange={handleFileChange} />
-                            </label>
-                            <p className="pl-1">o arrastrar y soltar</p>
+                    
+                    {formData.attachedFiles.length > 0 && (
+                      <div className="mb-4 space-y-2 w-full max-w-md mx-auto">
+                        {formData.attachedFiles.map((file, idx) => (
+                          <div key={idx} className="flex items-center justify-between bg-white p-2 rounded-lg border border-slate-200 shadow-sm">
+                            <div className="flex items-center overflow-hidden">
+                              <svg className="w-6 h-6 text-green-500 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                              <div className="truncate text-sm font-medium text-slate-900">{file.name}</div>
+                            </div>
+                            <div className="flex items-center gap-3 pl-2">
+                              <span className="text-xs text-slate-500 whitespace-nowrap">{(file.size / 1024 / 1024).toFixed(1)} MB</span>
+                              <button type="button" onClick={() => removeFile(idx)} className="text-red-400 hover:text-red-600 focus:outline-none">
+                                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
+                              </button>
+                            </div>
                           </div>
-                          <p className="text-xs text-slate-500">PDF, DOCX, JPG hasta 5MB</p>
-                        </>
-                      ) : (
-                        <div className="flex flex-col items-center">
-                          <svg className="w-10 h-10 text-green-500 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                          <span className="text-sm font-medium text-slate-900">{formData.fileMeta.name}</span>
-                          <span className="text-xs text-slate-500">{(formData.fileMeta.size / 1024).toFixed(0)} KB</span>
-                          <label htmlFor="file-upload" className="mt-2 text-xs font-semibold text-[#004F9F] hover:text-[#003366] cursor-pointer">
-                            Cambiar archivo
-                            <input id="file-upload" name="file-upload" type="file" className="sr-only" onChange={handleFileChange} />
-                          </label>
-                        </div>
-                      )}
+                        ))}
+                      </div>
+                    )}
+
+                    <div className="space-y-1 text-center">
+                      <svg className="mx-auto h-12 w-12 text-slate-400" stroke="currentColor" fill="none" viewBox="0 0 48 48" aria-hidden="true">
+                        <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                      </svg>
+                      <div className="flex text-sm text-slate-600 justify-center">
+                        <label htmlFor="file-upload" className="relative cursor-pointer bg-white rounded-md font-medium text-[#004F9F] hover:text-[#003366] focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-blue-500">
+                          <span>{formData.attachedFiles.length > 0 ? 'Añadir más archivos' : 'Subir archivos'}</span>
+                          <input id="file-upload" name="file-upload" type="file" multiple className="sr-only" onChange={handleFileChange} />
+                        </label>
+                        <p className="pl-1">o arrastrar y soltar</p>
+                      </div>
+                      <p className="text-xs text-slate-500 mt-2">PDF, DOCX, JPG hasta 20MB</p>
                     </div>
                   </div>
                 </div>

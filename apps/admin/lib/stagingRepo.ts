@@ -177,5 +177,22 @@ export const stagingRepo = {
       .getPublicUrl(path);
 
     return data.publicUrl;
+  },
+
+  async uploadFile(file: File): Promise<string | null> {
+    const fileExt = file.name.split('.').pop();
+    const fileName = `${Math.random().toString(36).substring(2, 15)}_${Date.now()}.${fileExt}`;
+    const filePath = `${fileName}`;
+
+    const { error } = await supabase.storage
+      .from('applications')
+      .upload(filePath, file);
+
+    if (error) {
+      console.error('Error uploading file:', error);
+      return null;
+    }
+
+    return filePath;
   }
 };
