@@ -48,7 +48,7 @@ const CandidateList: React.FC = () => {
   const [filteredSubmissions, setFilteredSubmissions] = useState<CandidateSubmission[]>([]);
   
   // Dynamic lists from DB + Configs
-  const [locationsList, setLocationsList] = useState<string[]>([]);
+  const [countriesList, setCountriesList] = useState<string[]>([]);
   const [documentationList, setDocumentationList] = useState<string[]>([]);
   const [ssCountriesList, setSsCountriesList] = useState<string[]>([]);
 
@@ -62,9 +62,9 @@ const CandidateList: React.FC = () => {
   const [isOfferDropdownOpen, setIsOfferDropdownOpen] = useState(false);
   const offerDropdownRef = useRef<HTMLDivElement>(null);
 
-  const [locationFilter, setLocationFilter] = useState<string[]>([]);
-  const [isLocationDropdownOpen, setIsLocationDropdownOpen] = useState(false);
-  const locationDropdownRef = useRef<HTMLDivElement>(null);
+  const [countryFilter, setCountryFilter] = useState<string[]>([]);
+  const [isCountryDropdownOpen, setIsCountryDropdownOpen] = useState(false);
+  const countryDropdownRef = useRef<HTMLDivElement>(null);
 
   const [documentationFilter, setDocumentationFilter] = useState<string[]>([]);
   const [isDocumentationDropdownOpen, setIsDocumentationDropdownOpen] = useState(false);
@@ -89,8 +89,8 @@ const CandidateList: React.FC = () => {
       if (offerDropdownRef.current && !offerDropdownRef.current.contains(target)) {
         setIsOfferDropdownOpen(false);
       }
-      if (locationDropdownRef.current && !locationDropdownRef.current.contains(target)) {
-        setIsLocationDropdownOpen(false);
+      if (countryDropdownRef.current && !countryDropdownRef.current.contains(target)) {
+        setIsCountryDropdownOpen(false);
       }
       if (documentationDropdownRef.current && !documentationDropdownRef.current.contains(target)) {
         setIsDocumentationDropdownOpen(false);
@@ -111,7 +111,7 @@ const CandidateList: React.FC = () => {
     dateRange, 
     searchTerm, 
     offerFilter, 
-    locationFilter, 
+    countryFilter, 
     documentationFilter, 
     hasDriverLicenseFilter, 
     europeanResidenceFilter,
@@ -122,12 +122,12 @@ const CandidateList: React.FC = () => {
     const data = await stagingRepo.listSubmissions();
     setSubmissions(data);
 
-    // 1. Extrair localizações (Residencia Actual) únicas
-    const dbLocations = data
-      .map(s => s.raw_payload.location?.trim())
-      .filter((l): l is string => !!l);
-    const uniqueLocations = Array.from(new Set(dbLocations)).sort();
-    setLocationsList(uniqueLocations);
+    // 1. Extrair países (País de Residencia) únicos
+    const dbCountries = data
+      .map(s => s.raw_payload.current_country?.trim())
+      .filter((c): c is string => !!c);
+    const uniqueCountries = Array.from(new Set(dbCountries)).sort();
+    setCountriesList(uniqueCountries);
 
     // 2. Extrair documentações únicas do banco + padrão
     const dbDocs = data
@@ -163,9 +163,9 @@ const CandidateList: React.FC = () => {
     );
   };
 
-  const toggleLocationFilter = (loc: string) => {
-    setLocationFilter(prev =>
-      prev.includes(loc) ? prev.filter(l => l !== loc) : [...prev, loc]
+  const toggleCountryFilter = (country: string) => {
+    setCountryFilter(prev =>
+      prev.includes(country) ? prev.filter(c => c !== country) : [...prev, country]
     );
   };
 
@@ -223,15 +223,15 @@ const CandidateList: React.FC = () => {
       });
     }
 
-    // 5. Location Filter (Residencia Actual) (Multi-select)
-    if (locationFilter.length > 0) {
+    // 5. Country Filter (País de Residencia) (Multi-select)
+    if (countryFilter.length > 0) {
       result = result.filter(s => {
-        const loc = s.raw_payload.location?.trim();
-        return locationFilter.some(selectedLoc => {
-          if (selectedLoc === 'Sin especificar') {
-            return !loc;
+        const c = s.raw_payload.current_country?.trim();
+        return countryFilter.some(selectedC => {
+          if (selectedC === 'Sin especificar') {
+            return !c || c === 'Sin especificar';
           }
-          return loc === selectedLoc;
+          return c === selectedC;
         });
       });
     }
@@ -325,11 +325,11 @@ const CandidateList: React.FC = () => {
     }).length;
   };
 
-  const getLocationCount = (locName: string) => {
+  const getCountryCount = (countryName: string) => {
     return submissions.filter(s => {
-      const loc = s.raw_payload.location?.trim();
-      if (locName === 'Sin especificar') return !loc;
-      return loc === locName;
+      const c = s.raw_payload.current_country?.trim();
+      if (countryName === 'Sin especificar') return !c || c === 'Sin especificar';
+      return c === countryName;
     }).length;
   };
 
@@ -391,7 +391,7 @@ const CandidateList: React.FC = () => {
   }).length;
 
   const activeAdvancedFiltersCount = 
-    locationFilter.length + 
+    countryFilter.length + 
     (hasDriverLicenseFilter !== 'all' ? 1 : 0) + 
     (europeanResidenceFilter !== 'all' ? 1 : 0) + 
     documentationFilter.length +
@@ -595,51 +595,51 @@ const CandidateList: React.FC = () => {
           {showAdvancedFilters && (
             <div className="bg-slate-50 border border-slate-200/85 p-4 rounded-xl grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 animate-fade-in shadow-inner">
               
-              {/* Location (Residencia Actual) Filter (Multi-select) */}
-              <div className="relative" ref={locationDropdownRef}>
-                <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">Residencia Actual</label>
+              {/* Country (País de Residencia) Filter (Multi-select) */}
+              <div className="relative" ref={countryDropdownRef}>
+                <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">País de Residencia</label>
                 <button
-                  onClick={() => setIsLocationDropdownOpen(!isLocationDropdownOpen)}
+                  onClick={() => setIsCountryDropdownOpen(!isCountryDropdownOpen)}
                   className="w-full text-left text-sm rounded-lg border border-slate-300 bg-white py-2 px-3 focus:ring-brand-500 focus:border-brand-500 shadow-sm flex justify-between items-center text-slate-700 font-medium cursor-pointer"
                 >
                   <span className="truncate">
-                    {locationFilter.length === 0
-                      ? "Todas las Residencias"
-                      : `${locationFilter.length} Seleccionada${locationFilter.length !== 1 ? 's' : ''}`
+                    {countryFilter.length === 0
+                      ? "Todos los Países"
+                      : `${countryFilter.length} Seleccionado${countryFilter.length !== 1 ? 's' : ''}`
                     }
                   </span>
                   <ChevronDown size={16} className="text-slate-400 ml-1 flex-shrink-0" />
                 </button>
 
-                {isLocationDropdownOpen && (
+                {isCountryDropdownOpen && (
                   <div className="absolute z-30 mt-1 w-full bg-white shadow-xl rounded-lg border border-slate-200 max-h-60 overflow-y-auto">
                     <div className="p-2 space-y-1">
-                      {/* Opção Sin SS no topo */}
+                      {/* Opção Sin especificar no topo */}
                       <label className="flex items-center px-2.5 py-1.5 hover:bg-slate-50 rounded-md cursor-pointer transition-colors justify-between border-b border-slate-100/50 pb-2">
                         <div className="flex items-center min-w-0">
                           <input
                             type="checkbox"
-                            checked={locationFilter.includes('Sin especificar')}
-                            onChange={() => toggleLocationFilter('Sin especificar')}
+                            checked={countryFilter.includes('Sin especificar')}
+                            onChange={() => toggleCountryFilter('Sin especificar')}
                             className="rounded text-brand-600 focus:ring-brand-500 mr-2.5 h-4 w-4 border-slate-300"
                           />
                           <span className="text-xs text-slate-700 truncate font-semibold italic text-slate-500">Sin especificar</span>
                         </div>
-                        <span className="text-[10px] text-slate-400 font-bold ml-2">({getLocationCount('Sin especificar')})</span>
+                        <span className="text-[10px] text-slate-400 font-bold ml-2">({getCountryCount('Sin especificar')})</span>
                       </label>
 
-                      {locationsList.map((loc) => {
-                        const count = getLocationCount(loc);
+                      {countriesList.map((country) => {
+                        const count = getCountryCount(country);
                         return (
-                          <label key={loc} className="flex items-center px-2.5 py-1.5 hover:bg-slate-50 rounded-md cursor-pointer transition-colors justify-between">
+                          <label key={country} className="flex items-center px-2.5 py-1.5 hover:bg-slate-50 rounded-md cursor-pointer transition-colors justify-between">
                             <div className="flex items-center min-w-0">
                               <input
                                 type="checkbox"
-                                checked={locationFilter.includes(loc)}
-                                onChange={() => toggleLocationFilter(loc)}
+                                checked={countryFilter.includes(country)}
+                                onChange={() => toggleCountryFilter(country)}
                                 className="rounded text-brand-600 focus:ring-brand-500 mr-2.5 h-4 w-4 border-slate-300"
                               />
-                              <span className="text-xs text-slate-700 truncate">{loc}</span>
+                              <span className="text-xs text-slate-700 truncate">{country}</span>
                             </div>
                             <span className="text-[10px] text-slate-400 font-bold ml-2">({count})</span>
                           </label>
@@ -648,13 +648,13 @@ const CandidateList: React.FC = () => {
                     </div>
                     <div className="p-2 border-t border-slate-100 bg-slate-50 flex justify-between items-center rounded-b-lg">
                       <button
-                        onClick={() => setLocationFilter([])}
+                        onClick={() => setCountryFilter([])}
                         className="text-[10px] text-slate-400 hover:text-red-500 font-semibold cursor-pointer"
                       >
                         Limpiar
                       </button>
                       <button
-                        onClick={() => setIsLocationDropdownOpen(false)}
+                        onClick={() => setIsCountryDropdownOpen(false)}
                         className="text-[10px] text-brand-600 hover:text-brand-800 font-bold cursor-pointer"
                       >
                         Listo
@@ -822,10 +822,10 @@ const CandidateList: React.FC = () => {
           {activeAdvancedFiltersCount > 0 && (
             <div className="flex flex-wrap gap-2 items-center text-xs px-1">
               <span className="text-slate-400 font-medium">Filtros activos:</span>
-              {locationFilter.map(loc => (
-                <span key={loc} className="inline-flex items-center px-2.5 py-0.5 rounded-full bg-slate-200 text-slate-700 gap-1 border border-slate-300">
-                  <span>Residencia: {loc}</span>
-                  <button onClick={() => toggleLocationFilter(loc)} className="text-slate-400 hover:text-slate-700 cursor-pointer">
+              {countryFilter.map(country => (
+                <span key={country} className="inline-flex items-center px-2.5 py-0.5 rounded-full bg-slate-200 text-slate-700 gap-1 border border-slate-300">
+                  <span>País: {country}</span>
+                  <button onClick={() => toggleCountryFilter(country)} className="text-slate-400 hover:text-slate-700 cursor-pointer">
                     <X size={12} />
                   </button>
                 </span>
@@ -864,7 +864,7 @@ const CandidateList: React.FC = () => {
               )}
               <button 
                 onClick={() => {
-                  setLocationFilter([]);
+                  setCountryFilter([]);
                   documentationFilter.length = 0;
                   setDocumentationFilter([]);
                   setSsFilter([]);

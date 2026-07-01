@@ -19,6 +19,7 @@ export interface CandidatePayload {
   european_residence?: string;
   social_security_countries?: string[];
   previous_companies?: string[];
+  current_country?: string;
 }
 
 export interface KanbanStage {
@@ -73,6 +74,7 @@ export interface Worker {
   social_security_countries?: string[];
   previous_companies?: string[];
   job_profiles?: string[];
+  current_country?: string;
 }
 
 export interface WorkerNote {

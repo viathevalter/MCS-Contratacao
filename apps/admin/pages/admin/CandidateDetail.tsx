@@ -44,7 +44,8 @@ const CandidateDetail: React.FC = () => {
     european_residence: '',
     location: '',
     social_security_countries: [] as string[],
-    previous_companies: [] as string[]
+    previous_companies: [] as string[],
+    current_country: ''
   });
 
   // Edit Basic Info Modal State
@@ -219,7 +220,8 @@ const CandidateDetail: React.FC = () => {
       european_residence: submission.raw_payload.european_residence || '',
       location: submission.raw_payload.location,
       social_security_countries: submission.raw_payload.social_security_countries || [],
-      previous_companies: submission.raw_payload.previous_companies || []
+      previous_companies: submission.raw_payload.previous_companies || [],
+      current_country: submission.raw_payload.current_country || ''
     });
     setShowEditPersonalModal(true);
   };
@@ -235,7 +237,8 @@ const CandidateDetail: React.FC = () => {
       european_residence: editPersonalData.european_residence,
       location: editPersonalData.location,
       social_security_countries: editPersonalData.social_security_countries,
-      previous_companies: editPersonalData.previous_companies
+      previous_companies: editPersonalData.previous_companies,
+      current_country: editPersonalData.current_country
     };
 
     const updated = await stagingRepo.updateSubmission(submission.id, { raw_payload: updatedPayload });
@@ -367,6 +370,10 @@ const CandidateDetail: React.FC = () => {
               <div>
                 <dt className="text-sm font-medium text-slate-500">Nacionalidad</dt>
                 <dd className="mt-1 text-sm text-slate-900">{submission.raw_payload.nationality || 'No definida'}</dd>
+              </div>
+              <div>
+                <dt className="text-sm font-medium text-slate-500">País de Residencia</dt>
+                <dd className="mt-1 text-sm text-slate-900 font-semibold text-slate-800">{submission.raw_payload.current_country || 'Sin especificar'}</dd>
               </div>
               <div>
                 <dt className="text-sm font-medium text-slate-500">Licencia de Conducir</dt>
@@ -799,6 +806,41 @@ const CandidateDetail: React.FC = () => {
                       onChange={e => setEditPersonalData({ ...editPersonalData, nationality: e.target.value })}
                       placeholder="Ej: Española, Rumana..."
                     />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-semibold text-slate-700 mb-1">País de Residencia Actual</label>
+                    <select
+                      className={inputStyle}
+                      value={editPersonalData.current_country}
+                      onChange={e => setEditPersonalData({ ...editPersonalData, current_country: e.target.value })}
+                    >
+                      <option value="Sin especificar">Sin especificar</option>
+                      <option value="España">España</option>
+                      <option value="Portugal">Portugal</option>
+                      <option value="Brasil">Brasil</option>
+                      <option value="Bélgica">Bélgica</option>
+                      <option value="Alemania">Alemania</option>
+                      <option value="Francia">Francia</option>
+                      <option value="Italia">Italia</option>
+                      <option value="Rumanía">Rumanía</option>
+                      <option value="Venezuela">Venezuela</option>
+                      <option value="Colombia">Colombia</option>
+                      <option value="Perú">Perú</option>
+                      <option value="Argentina">Argentina</option>
+                      <option value="Cuba">Cuba</option>
+                      <option value="Honduras">Honduras</option>
+                      <option value="Nicaragua">Nicaragua</option>
+                      <option value="Ecuador">Ecuador</option>
+                      <option value="Paraguay">Paraguay</option>
+                      <option value="Uruguay">Uruguay</option>
+                      <option value="Chile">Chile</option>
+                      <option value="Bolivia">Bolivia</option>
+                      <option value="México">México</option>
+                      <option value="Marruecos">Marruecos</option>
+                      <option value="Ucrania">Ucrania</option>
+                      <option value="Otro">Otro</option>
+                    </select>
                   </div>
 
                   <div>
