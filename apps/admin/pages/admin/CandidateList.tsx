@@ -36,22 +36,10 @@ const OFFER_OPTIONS = [
 
 const DOCUMENTATION_OPTIONS = [
   "Pasaporte de la UE (Europeo)",
-  "Permiso de trabajo válido",
-  "Visa de estudiante",
+  "Permiso de trabalho válido",
+  "Visa de estudante",
   "En trámite / Sin documentos",
   "Otro"
-];
-
-const DEFAULT_NATIONALITIES = [
-  "Española",
-  "Portuguesa",
-  "Brasileña",
-  "Rumana",
-  "Ucraniana",
-  "Colombiana",
-  "Venezolana",
-  "Marroquí",
-  "Argentina"
 ];
 
 const CandidateList: React.FC = () => {
@@ -60,7 +48,7 @@ const CandidateList: React.FC = () => {
   const [filteredSubmissions, setFilteredSubmissions] = useState<CandidateSubmission[]>([]);
   
   // Dynamic lists from DB + Configs
-  const [nationalitiesList, setNationalitiesList] = useState<string[]>([]);
+  const [locationsList, setLocationsList] = useState<string[]>([]);
   const [documentationList, setDocumentationList] = useState<string[]>([]);
   const [ssCountriesList, setSsCountriesList] = useState<string[]>([]);
 
@@ -74,9 +62,9 @@ const CandidateList: React.FC = () => {
   const [isOfferDropdownOpen, setIsOfferDropdownOpen] = useState(false);
   const offerDropdownRef = useRef<HTMLDivElement>(null);
 
-  const [nationalityFilter, setNationalityFilter] = useState<string[]>([]);
-  const [isNationalityDropdownOpen, setIsNationalityDropdownOpen] = useState(false);
-  const nationalityDropdownRef = useRef<HTMLDivElement>(null);
+  const [locationFilter, setLocationFilter] = useState<string[]>([]);
+  const [isLocationDropdownOpen, setIsLocationDropdownOpen] = useState(false);
+  const locationDropdownRef = useRef<HTMLDivElement>(null);
 
   const [documentationFilter, setDocumentationFilter] = useState<string[]>([]);
   const [isDocumentationDropdownOpen, setIsDocumentationDropdownOpen] = useState(false);
@@ -101,8 +89,8 @@ const CandidateList: React.FC = () => {
       if (offerDropdownRef.current && !offerDropdownRef.current.contains(target)) {
         setIsOfferDropdownOpen(false);
       }
-      if (nationalityDropdownRef.current && !nationalityDropdownRef.current.contains(target)) {
-        setIsNationalityDropdownOpen(false);
+      if (locationDropdownRef.current && !locationDropdownRef.current.contains(target)) {
+        setIsLocationDropdownOpen(false);
       }
       if (documentationDropdownRef.current && !documentationDropdownRef.current.contains(target)) {
         setIsDocumentationDropdownOpen(false);
@@ -123,7 +111,7 @@ const CandidateList: React.FC = () => {
     dateRange, 
     searchTerm, 
     offerFilter, 
-    nationalityFilter, 
+    locationFilter, 
     documentationFilter, 
     hasDriverLicenseFilter, 
     europeanResidenceFilter,
@@ -134,14 +122,12 @@ const CandidateList: React.FC = () => {
     const data = await stagingRepo.listSubmissions();
     setSubmissions(data);
 
-    // 1. Extrair nacionalidades únicas
-    const dbNationalities = data
-      .map(s => s.raw_payload.nationality?.trim())
-      .filter((n): n is string => !!n);
-    const uniqueNationalities = Array.from(
-      new Set([...DEFAULT_NATIONALITIES, ...dbNationalities])
-    ).sort();
-    setNationalitiesList(uniqueNationalities);
+    // 1. Extrair localizações (Residencia Actual) únicas
+    const dbLocations = data
+      .map(s => s.raw_payload.location?.trim())
+      .filter((l): l is string => !!l);
+    const uniqueLocations = Array.from(new Set(dbLocations)).sort();
+    setLocationsList(uniqueLocations);
 
     // 2. Extrair documentações únicas do banco + padrão
     const dbDocs = data
@@ -177,9 +163,9 @@ const CandidateList: React.FC = () => {
     );
   };
 
-  const toggleNationalityFilter = (nat: string) => {
-    setNationalityFilter(prev =>
-      prev.includes(nat) ? prev.filter(n => n !== nat) : [...prev, nat]
+  const toggleLocationFilter = (loc: string) => {
+    setLocationFilter(prev =>
+      prev.includes(loc) ? prev.filter(l => l !== loc) : [...prev, loc]
     );
   };
 
@@ -237,15 +223,15 @@ const CandidateList: React.FC = () => {
       });
     }
 
-    // 5. Nationality Filter (Multi-select)
-    if (nationalityFilter.length > 0) {
+    // 5. Location Filter (Residencia Actual) (Multi-select)
+    if (locationFilter.length > 0) {
       result = result.filter(s => {
-        const nat = s.raw_payload.nationality?.trim();
-        return nationalityFilter.some(selectedNat => {
-          if (selectedNat === 'Sin especificar') {
-            return !nat;
+        const loc = s.raw_payload.location?.trim();
+        return locationFilter.some(selectedLoc => {
+          if (selectedLoc === 'Sin especificar') {
+            return !loc;
           }
-          return nat === selectedNat;
+          return loc === selectedLoc;
         });
       });
     }
@@ -339,11 +325,11 @@ const CandidateList: React.FC = () => {
     }).length;
   };
 
-  const getNationalityCount = (natName: string) => {
+  const getLocationCount = (locName: string) => {
     return submissions.filter(s => {
-      const nat = s.raw_payload.nationality?.trim();
-      if (natName === 'Sin especificar') return !nat;
-      return nat === natName;
+      const loc = s.raw_payload.location?.trim();
+      if (locName === 'Sin especificar') return !loc;
+      return loc === locName;
     }).length;
   };
 
@@ -405,7 +391,7 @@ const CandidateList: React.FC = () => {
   }).length;
 
   const activeAdvancedFiltersCount = 
-    nationalityFilter.length + 
+    locationFilter.length + 
     (hasDriverLicenseFilter !== 'all' ? 1 : 0) + 
     (europeanResidenceFilter !== 'all' ? 1 : 0) + 
     documentationFilter.length +
@@ -609,51 +595,51 @@ const CandidateList: React.FC = () => {
           {showAdvancedFilters && (
             <div className="bg-slate-50 border border-slate-200/85 p-4 rounded-xl grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 animate-fade-in shadow-inner">
               
-              {/* Nationality Filter (Multi-select) */}
-              <div className="relative" ref={nationalityDropdownRef}>
-                <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">Nacionalidad</label>
+              {/* Location (Residencia Actual) Filter (Multi-select) */}
+              <div className="relative" ref={locationDropdownRef}>
+                <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">Residencia Actual</label>
                 <button
-                  onClick={() => setIsNationalityDropdownOpen(!isNationalityDropdownOpen)}
+                  onClick={() => setIsLocationDropdownOpen(!isLocationDropdownOpen)}
                   className="w-full text-left text-sm rounded-lg border border-slate-300 bg-white py-2 px-3 focus:ring-brand-500 focus:border-brand-500 shadow-sm flex justify-between items-center text-slate-700 font-medium cursor-pointer"
                 >
                   <span className="truncate">
-                    {nationalityFilter.length === 0
-                      ? "Todas las Nacionalidades"
-                      : `${nationalityFilter.length} Seleccionada${nationalityFilter.length !== 1 ? 's' : ''}`
+                    {locationFilter.length === 0
+                      ? "Todas las Residencias"
+                      : `${locationFilter.length} Seleccionada${locationFilter.length !== 1 ? 's' : ''}`
                     }
                   </span>
                   <ChevronDown size={16} className="text-slate-400 ml-1 flex-shrink-0" />
                 </button>
 
-                {isNationalityDropdownOpen && (
+                {isLocationDropdownOpen && (
                   <div className="absolute z-30 mt-1 w-full bg-white shadow-xl rounded-lg border border-slate-200 max-h-60 overflow-y-auto">
                     <div className="p-2 space-y-1">
-                      {/* Opção Sin Especificar no topo */}
+                      {/* Opção Sin SS no topo */}
                       <label className="flex items-center px-2.5 py-1.5 hover:bg-slate-50 rounded-md cursor-pointer transition-colors justify-between border-b border-slate-100/50 pb-2">
                         <div className="flex items-center min-w-0">
                           <input
                             type="checkbox"
-                            checked={nationalityFilter.includes('Sin especificar')}
-                            onChange={() => toggleNationalityFilter('Sin especificar')}
+                            checked={locationFilter.includes('Sin especificar')}
+                            onChange={() => toggleLocationFilter('Sin especificar')}
                             className="rounded text-brand-600 focus:ring-brand-500 mr-2.5 h-4 w-4 border-slate-300"
                           />
                           <span className="text-xs text-slate-700 truncate font-semibold italic text-slate-500">Sin especificar</span>
                         </div>
-                        <span className="text-[10px] text-slate-400 font-bold ml-2">({getNationalityCount('Sin especificar')})</span>
+                        <span className="text-[10px] text-slate-400 font-bold ml-2">({getLocationCount('Sin especificar')})</span>
                       </label>
-                      
-                      {nationalitiesList.map((nat) => {
-                        const count = getNationalityCount(nat);
+
+                      {locationsList.map((loc) => {
+                        const count = getLocationCount(loc);
                         return (
-                          <label key={nat} className="flex items-center px-2.5 py-1.5 hover:bg-slate-50 rounded-md cursor-pointer transition-colors justify-between">
+                          <label key={loc} className="flex items-center px-2.5 py-1.5 hover:bg-slate-50 rounded-md cursor-pointer transition-colors justify-between">
                             <div className="flex items-center min-w-0">
                               <input
                                 type="checkbox"
-                                checked={nationalityFilter.includes(nat)}
-                                onChange={() => toggleNationalityFilter(nat)}
+                                checked={locationFilter.includes(loc)}
+                                onChange={() => toggleLocationFilter(loc)}
                                 className="rounded text-brand-600 focus:ring-brand-500 mr-2.5 h-4 w-4 border-slate-300"
                               />
-                              <span className="text-xs text-slate-700 truncate">{nat}</span>
+                              <span className="text-xs text-slate-700 truncate">{loc}</span>
                             </div>
                             <span className="text-[10px] text-slate-400 font-bold ml-2">({count})</span>
                           </label>
@@ -662,13 +648,13 @@ const CandidateList: React.FC = () => {
                     </div>
                     <div className="p-2 border-t border-slate-100 bg-slate-50 flex justify-between items-center rounded-b-lg">
                       <button
-                        onClick={() => setNationalityFilter([])}
+                        onClick={() => setLocationFilter([])}
                         className="text-[10px] text-slate-400 hover:text-red-500 font-semibold cursor-pointer"
                       >
                         Limpiar
                       </button>
                       <button
-                        onClick={() => setIsNationalityDropdownOpen(false)}
+                        onClick={() => setIsLocationDropdownOpen(false)}
                         className="text-[10px] text-brand-600 hover:text-brand-800 font-bold cursor-pointer"
                       >
                         Listo
@@ -836,10 +822,10 @@ const CandidateList: React.FC = () => {
           {activeAdvancedFiltersCount > 0 && (
             <div className="flex flex-wrap gap-2 items-center text-xs px-1">
               <span className="text-slate-400 font-medium">Filtros activos:</span>
-              {nationalityFilter.map(nat => (
-                <span key={nat} className="inline-flex items-center px-2.5 py-0.5 rounded-full bg-slate-200 text-slate-700 gap-1 border border-slate-300">
-                  <span>Nat: {nat}</span>
-                  <button onClick={() => toggleNationalityFilter(nat)} className="text-slate-400 hover:text-slate-700 cursor-pointer">
+              {locationFilter.map(loc => (
+                <span key={loc} className="inline-flex items-center px-2.5 py-0.5 rounded-full bg-slate-200 text-slate-700 gap-1 border border-slate-300">
+                  <span>Residencia: {loc}</span>
+                  <button onClick={() => toggleLocationFilter(loc)} className="text-slate-400 hover:text-slate-700 cursor-pointer">
                     <X size={12} />
                   </button>
                 </span>
@@ -870,7 +856,7 @@ const CandidateList: React.FC = () => {
               )}
               {europeanResidenceFilter !== 'all' && (
                 <span className="inline-flex items-center px-2.5 py-0.5 rounded-full bg-slate-200 text-slate-700 gap-1 border border-slate-300">
-                  <span>Residencia: {europeanResidenceFilter === 'yes' ? 'Sí' : 'No'}</span>
+                  <span>Residencia UE: {europeanResidenceFilter === 'yes' ? 'Sí' : 'No'}</span>
                   <button onClick={() => setEuropeanResidenceFilter('all')} className="text-slate-400 hover:text-slate-700 cursor-pointer">
                     <X size={12} />
                   </button>
@@ -878,7 +864,8 @@ const CandidateList: React.FC = () => {
               )}
               <button 
                 onClick={() => {
-                  setNationalityFilter([]);
+                  setLocationFilter([]);
+                  documentationFilter.length = 0;
                   setDocumentationFilter([]);
                   setSsFilter([]);
                   setHasDriverLicenseFilter('all');
@@ -911,6 +898,7 @@ const CandidateList: React.FC = () => {
                       <th scope="col" className="px-6 py-3.5 text-left text-xs font-bold text-slate-400 uppercase tracking-wider">Fecha</th>
                       <th scope="col" className="px-6 py-3.5 text-left text-xs font-bold text-slate-400 uppercase tracking-wider">Candidato</th>
                       <th scope="col" className="px-6 py-3.5 text-left text-xs font-bold text-slate-400 uppercase tracking-wider">Contacto</th>
+                      <th scope="col" className="px-6 py-3.5 text-left text-xs font-bold text-slate-400 uppercase tracking-wider">Nacionalidad</th>
                       <th scope="col" className="px-6 py-3.5 text-left text-xs font-bold text-slate-400 uppercase tracking-wider">Estado</th>
                       <th scope="col" className="relative px-6 py-3.5"><span className="sr-only">Acciones</span></th>
                     </tr>
@@ -963,6 +951,15 @@ const CandidateList: React.FC = () => {
                           <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-600">
                             <div className="font-semibold text-slate-700">{sub.raw_phone}</div>
                             <div className="text-xs text-slate-400 font-medium">{sub.raw_email || <span className="italic text-slate-300">Sin correo</span>}</div>
+                          </td>
+
+                          {/* Nationality */}
+                          <td className="px-6 py-4 whitespace-nowrap text-sm">
+                            {sub.raw_payload.nationality ? (
+                              <span className="font-semibold text-slate-700">{sub.raw_payload.nationality}</span>
+                            ) : (
+                              <span className="italic text-slate-300 text-xs">Sin especificar</span>
+                            )}
                           </td>
 
                           {/* Status Label */}
