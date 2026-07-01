@@ -80,6 +80,10 @@ const CandidateList: React.FC = () => {
   // Toggle Advanced Filters
   const [showAdvancedFilters, setShowAdvancedFilters] = useState(false);
 
+  // Sorting states
+  const [sortField, setSortField] = useState<'created_at' | 'raw_name'>('created_at');
+  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc'); // default: desc (recent first)
+
   useEffect(() => {
     loadData();
 
@@ -115,7 +119,9 @@ const CandidateList: React.FC = () => {
     documentationFilter, 
     hasDriverLicenseFilter, 
     europeanResidenceFilter,
-    ssFilter
+    ssFilter,
+    sortField,
+    sortOrder
   ]);
 
   const loadData = async () => {
@@ -178,6 +184,24 @@ const CandidateList: React.FC = () => {
   const toggleSsFilter = (c: string) => {
     setSsFilter(prev =>
       prev.includes(c) ? prev.filter(item => item !== c) : [...prev, c]
+    );
+  };
+
+  const handleSort = (field: 'created_at' | 'raw_name') => {
+    if (sortField === field) {
+      setSortOrder(prev => prev === 'asc' ? 'desc' : 'asc');
+    } else {
+      setSortField(field);
+      setSortOrder(field === 'created_at' ? 'desc' : 'asc');
+    }
+  };
+
+  const renderSortIcon = (field: 'created_at' | 'raw_name') => {
+    if (sortField !== field) return <span className="text-slate-300 ml-1">↕</span>;
+    return (
+      <span className="text-brand-600 font-bold ml-1">
+        {sortOrder === 'asc' ? '▲' : '▼'}
+      </span>
     );
   };
 
@@ -282,6 +306,16 @@ const CandidateList: React.FC = () => {
         });
       });
     }
+
+    // 10. Sorting
+    result.sort((a, b) => {
+      let valA = sortField === 'created_at' ? new Date(a.created_at).getTime() : a.raw_name.toLowerCase();
+      let valB = sortField === 'created_at' ? new Date(b.created_at).getTime() : b.raw_name.toLowerCase();
+
+      if (valA < valB) return sortOrder === 'asc' ? -1 : 1;
+      if (valA > valB) return sortOrder === 'asc' ? 1 : -1;
+      return 0;
+    });
 
     setFilteredSubmissions(result);
   };
@@ -895,12 +929,30 @@ const CandidateList: React.FC = () => {
                 <table className="min-w-full divide-y divide-slate-100">
                   <thead className="bg-slate-50/70 border-b border-slate-100">
                     <tr>
-                      <th scope="col" className="px-6 py-3.5 text-left text-xs font-bold text-slate-400 uppercase tracking-wider">Fecha</th>
-                      <th scope="col" className="px-6 py-3.5 text-left text-xs font-bold text-slate-400 uppercase tracking-wider">Candidato</th>
-                      <th scope="col" className="px-6 py-3.5 text-left text-xs font-bold text-slate-400 uppercase tracking-wider">Contacto</th>
-                      <th scope="col" className="px-6 py-3.5 text-left text-xs font-bold text-slate-400 uppercase tracking-wider">Nacionalidad</th>
-                      <th scope="col" className="px-6 py-3.5 text-left text-xs font-bold text-slate-400 uppercase tracking-wider">Estado</th>
-                      <th scope="col" className="relative px-6 py-3.5"><span className="sr-only">Acciones</span></th>
+                      <th 
+                        scope="col" 
+                        onClick={() => handleSort('created_at')}
+                        className="px-6 py-3.5 text-left text-xs font-bold text-slate-400 uppercase tracking-wider sticky top-0 bg-slate-50 z-10 cursor-pointer hover:bg-slate-100/90 hover:text-slate-600 transition-colors select-none"
+                      >
+                        <div className="flex items-center">
+                          <span>Fecha</span>
+                          {renderSortIcon('created_at')}
+                        </div>
+                      </th>
+                      <th 
+                        scope="col" 
+                        onClick={() => handleSort('raw_name')}
+                        className="px-6 py-3.5 text-left text-xs font-bold text-slate-400 uppercase tracking-wider sticky top-0 bg-slate-50 z-10 cursor-pointer hover:bg-slate-100/90 hover:text-slate-600 transition-colors select-none"
+                      >
+                        <div className="flex items-center">
+                          <span>Candidato</span>
+                          {renderSortIcon('raw_name')}
+                        </div>
+                      </th>
+                      <th scope="col" className="px-6 py-3.5 text-left text-xs font-bold text-slate-400 uppercase tracking-wider sticky top-0 bg-slate-50 z-10">Contacto</th>
+                      <th scope="col" className="px-6 py-3.5 text-left text-xs font-bold text-slate-400 uppercase tracking-wider sticky top-0 bg-slate-50 z-10">Nacionalidad</th>
+                      <th scope="col" className="px-6 py-3.5 text-left text-xs font-bold text-slate-400 uppercase tracking-wider sticky top-0 bg-slate-50 z-10">Estado</th>
+                      <th scope="col" className="relative px-6 py-3.5 sticky top-0 bg-slate-50 z-10"><span className="sr-only">Acciones</span></th>
                     </tr>
                   </thead>
                   <tbody className="bg-white divide-y divide-slate-100">
