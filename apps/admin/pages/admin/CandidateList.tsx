@@ -914,8 +914,8 @@ const CandidateList: React.FC = () => {
         </div>
 
         {/* TABLE CONTAINER (ONLY THIS SECTION SCROLLS VERTICALLY) */}
-        <div className="flex-1 overflow-y-auto min-h-0 bg-slate-100 px-6 py-4">
-          <div className="border border-slate-200 rounded-xl shadow-sm overflow-hidden bg-white">
+        <div className="flex-1 min-h-0 bg-slate-100 px-6 py-4 flex flex-col">
+          <div className="flex-1 border border-slate-200 rounded-xl shadow-sm bg-white overflow-auto min-h-0 relative">
             {filteredSubmissions.length === 0 ? (
               <div className="p-12 text-center text-slate-500 flex flex-col items-center">
                 <svg className="h-12 w-12 text-slate-300 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -925,7 +925,6 @@ const CandidateList: React.FC = () => {
                 <p className="text-sm text-slate-400 mt-1">Prueba ajustar los filtros o genera datos de prueba.</p>
               </div>
             ) : (
-              <div className="overflow-x-auto">
                 <table className="min-w-full divide-y divide-slate-100">
                   <thead className="bg-slate-50/70 border-b border-slate-100">
                     <tr>
@@ -1032,7 +1031,6 @@ const CandidateList: React.FC = () => {
                     })}
                   </tbody>
                 </table>
-              </div>
             )}
           </div>
         </div>
